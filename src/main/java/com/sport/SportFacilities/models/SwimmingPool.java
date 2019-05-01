@@ -22,4 +22,7 @@ public class SwimmingPool {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")
     private SportObject sportObject;
+
+    @OneToMany(mappedBy = "swimmingPool")
+    private LessonDetail lessonDetail;
 }

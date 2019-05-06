@@ -3,6 +3,7 @@ package com.sport.SportFacilities.models;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 public class Instructor {
     
@@ -15,4 +16,7 @@ public class Instructor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     private SwimmingPool swimmingPool;
+
+    @OneToOne(mappedBy = "instructor")
+    private LessonDetail lessonDetail;
 }

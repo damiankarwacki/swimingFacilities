@@ -16,6 +16,8 @@ public class SportObject {
     @OneToMany(mappedBy = "sportObject")
     private Set<SwimmingPool> swimmingPool;
 
+    @OneToOne
     private Address address;
+
     private String name;
 }

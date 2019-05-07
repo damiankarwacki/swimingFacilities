@@ -1,8 +1,12 @@
 package com.sport.SportFacilities.models;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@NoArgsConstructor
 public class LessonDetail {
 
     @Id

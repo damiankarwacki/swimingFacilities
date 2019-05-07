@@ -1,11 +1,16 @@
 package com.sport.SportFacilities.models;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@NoArgsConstructor
 public class Instructor {
     
+    @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private String surname;
@@ -15,4 +20,8 @@ public class Instructor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     private SwimmingPool swimmingPool;
+    
+    @OneToMany(mappedBy = "instructor",
+                  fetch = FetchType.LAZY)
+    private Set<Lesson> lessons;
 }

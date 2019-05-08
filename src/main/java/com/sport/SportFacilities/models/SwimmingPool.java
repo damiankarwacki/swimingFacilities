@@ -19,7 +19,7 @@ public class SwimmingPool {
     
     @OneToMany(mappedBy = "swimmingPool",
                   fetch = FetchType.LAZY)
-    private Instructor instructor;
+    private Set<Instructor> instructors;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")

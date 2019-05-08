@@ -21,7 +21,6 @@ public class LessonDetail {
     private LessonType lessonType;
     
     private Float price;
-    
-    @Temporal(TemporalType.DATE)
+
     private LocalDate date;
 }

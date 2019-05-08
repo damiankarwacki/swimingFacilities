@@ -14,7 +14,6 @@ public class Lesson {
     @GeneratedValue
     private Integer id;
     
-    @Temporal(TemporalType.DATE)
     private LocalDate orderDate;
     
     @ManyToMany(mappedBy = "lessons")

@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface LessonDetailRepository extends CrudRepository<LessonDetail, Integer> {
     Optional<LessonDetail> findByPrice(Float price);
-    Optional<LessonDetail> findByInstructor(Instructor instructor);
     Optional<LessonDetail> findByLessonType(LessonType lessonType);
     
 }

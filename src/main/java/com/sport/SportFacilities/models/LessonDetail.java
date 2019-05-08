@@ -8,6 +8,9 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 public class LessonDetail {
+    
+    @Id
+    private Integer id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

@@ -8,11 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface SwimmingPoolRepository extends CrudRepository<Integer, SwimmingPool> {
+public interface SwimmingPoolRepository extends CrudRepository<SwimmingPool, Integer> {
     
-    //Todo o danej liczbie torów
     Optional<Set<SwimmingPool>> findAllByLanesQuantity(Integer lanesQuantity);
 
-    //Todo o danej głębokości
     Optional<Set<SwimmingPool>> findAllByDepth(Float depth);
 }

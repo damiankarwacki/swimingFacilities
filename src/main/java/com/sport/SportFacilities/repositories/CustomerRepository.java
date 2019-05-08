@@ -1,5 +1,10 @@
 package com.sport.SportFacilities.repositories;
 
-public interface CustomerRepository {
+import com.sport.SportFacilities.models.Customer;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CustomerRepository extends CrudRepository<Integer, Customer> {
 
 }

@@ -13,7 +13,8 @@ public class SportObject {
     @GeneratedValue
     private Integer id;
     
-    @OneToMany(mappedBy = "sportObject")
+    
+    @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
     private Set<SwimmingPool> swimmingPool;
 
     @OneToOne

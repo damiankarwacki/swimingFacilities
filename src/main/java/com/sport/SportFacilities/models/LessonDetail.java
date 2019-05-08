@@ -9,21 +9,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class LessonDetail {
 
-    @Id
-    @GeneratedValue
-    private Integer id;
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Lesson lesson;
+    
     @Enumerated(EnumType.STRING)
     private LessonType lessonType;
-
-    @OneToOne
-    private Instructor instructor;
-
+    
     private Float price;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "swimming_pool_id")
-    private SwimmingPool swimmingPool;
 
     private LocalDate date;
 }

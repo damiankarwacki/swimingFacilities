@@ -3,6 +3,7 @@ package com.sport.SportFacilities.models;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -16,13 +17,17 @@ public class SwimmingPool {
     private Float lenght;
     private Float depth;
     
-    @OneToMany(mappedBy = "swimmingPool")
-    private Instructor instructor;
+    @OneToMany(mappedBy = "swimmingPool",
+                  fetch = FetchType.LAZY)
+    private Set<Instructor> instructors;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")
     private SportObject sportObject;
-
-    @OneToMany(mappedBy = "swimmingPool")
-    private LessonDetail lessonDetail;
+    
+    @OneToMany(mappedBy = "swimmingPool",
+                  fetch = FetchType.LAZY)
+    private Set<Lesson> lessons;
+    
+    
 }

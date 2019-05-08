@@ -16,7 +16,9 @@ public class SportObject {
     
     @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
     private Set<SwimmingPool> swimmingPool;
-    
+
+    @OneToOne
     private Address address;
+
     private String name;
 }

@@ -8,11 +8,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 public class LessonDetail {
-    
-    @Id
-    @GeneratedValue
-    private Integer id;
-    
+
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Lesson lesson;

@@ -15,10 +15,15 @@ class SportObjectRepositoryTest extends Specification {
     SportObjectRepository sportObjectRepository
     
     @Shared
-    Address address = new Address("Street","City","PostCode")
+    Address address
     
     @Shared
-    SportObject sportObject = new SportObject(address,"SportObject")
+    SportObject sportObject
+    
+    def setup(){
+        address = new Address("Street","City","PostCode")
+        sportObject = new SportObject(address,"SportObject")
+    }
     
     
     def "check if sportObject is saved in DB"() {
@@ -42,21 +47,23 @@ class SportObjectRepositoryTest extends Specification {
             SportObject sportObjectFromDb = sportObjectRepository.findById(sportObject.getId()).orElse(null)
         then:
             sportObjectFromDb == sportObject
+            println "siema"
     }
     
     
     @Transactional
-    def "should return all sport object in respective city"() {
+    def "check if return all sport object in given city"() {
         given:
-            Address addressInTheSameCity = new Address("Street2","City","PostCode2")
+            Address addressInTheSameCity = new Address("Street1","City1","PostCode1")
+            Address addressInTheSameCity2 = new Address("Street2","City1","PostCode2")
             Set<SportObject> sportObjects = [
-                    new SportObject(address,"1"),
-                    new SportObject(addressInTheSameCity,"2")
+                    new SportObject(addressInTheSameCity,"1"),
+                    new SportObject(addressInTheSameCity2,"2")
             ]
         
         when:
             sportObjects.stream().forEach {s -> sportObjectRepository.save(s)}
-            Set<SportObject> sportObjectsFromDb = sportObjectRepository.findAllByCity("City").orElse(Collections.emptySet())
+            Set<SportObject> sportObjectsFromDb = sportObjectRepository.findAllByCity("City1").orElse(Collections.emptySet())
         then:
             sportObjectsFromDb == sportObjects
     }

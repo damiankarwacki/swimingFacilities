@@ -15,12 +15,14 @@ import java.util.Set;
 
 @Repository
 public interface LessonRepository extends CrudRepository<Lesson, Integer> {
-    
+
+//    TODO Krzychu testy
     @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
     Optional<Lesson> findByLessonType(@Param("lessonType") LessonType lessonType);
     
     Optional<Set<Lesson>> findAllByOrderDate(LocalDate orderDate);
     
+//    TODO Damian testy
     @Query("SELECT l FROM Lesson l JOIN SwimmingPool s ON s.id = l.swimmingPool WHERE s.sportObject = :sportObjectId")
     Optional<Set<Lesson>> findAllBySportObjectId(@Param("sportObjectId") Integer sportObjectId);
     

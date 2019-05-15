@@ -10,6 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface LessonDetailRepository extends CrudRepository<LessonDetail, Integer> {
+
+//    TODO Krzychu testy
     Optional<LessonDetail> findByPrice(Float price);
     Optional<LessonDetail> findByLessonType(LessonType lessonType);
     

@@ -47,7 +47,6 @@ class SportObjectRepositoryTest extends Specification {
             SportObject sportObjectFromDb = sportObjectRepository.findById(sportObject.getId()).orElse(null)
         then:
             sportObjectFromDb == sportObject
-            println "siema"
     }
     
     

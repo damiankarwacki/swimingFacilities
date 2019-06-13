@@ -3,6 +3,8 @@ package com.sport.SportFacilities.repositories
 import com.sport.SportFacilities.models.Address
 import com.sport.SportFacilities.models.Instructor
 import com.sport.SportFacilities.models.Lesson
+import com.sport.SportFacilities.models.LessonDetail
+import com.sport.SportFacilities.models.LessonType
 import com.sport.SportFacilities.models.SportObject
 import com.sport.SportFacilities.models.SwimmingPool
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,4 +71,5 @@ class LessonRepositoryTest extends Specification {
         then:
             lessonsFromDb[0] == lessonOnObject1WithInstructor1
     }
+    
 }

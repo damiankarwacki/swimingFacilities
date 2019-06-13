@@ -15,8 +15,10 @@ public interface SportObjectRepository extends CrudRepository<SportObject, Integ
     
     
     //Tip: Hibernate domyślnie robi join po polu oznaczonym @JoinColumn wewnątrz encji
-//    @Query("SELECT o FROM SportObject o JOIN  Address a ON a.id = o.address WHERE a.city = :city")
-    @Query("SELECT o FROM SportObject o, Address a WHERE a.id = o.address AND  a.city = :city")
+    //Pomijając ten Tip aktywne query musiałoby wyglądać jak poniżej
+    //@Query("SELECT o FROM SportObject o JOIN  Address a ON a.id = o.address WHERE a.city = :city")
+    //Tip2: Jeśli chcemy odnieść sie do domyślnej Encji z repozytorium (SportObject) możemy użyć konstrukcji #{#entityName}
+    @Query("SELECT o FROM #{#entityName} o, Address a WHERE a.id = o.address AND  a.city = :city")
     Optional<Set<SportObject>> findAllByCity(@Param("city") String city);
     
 }

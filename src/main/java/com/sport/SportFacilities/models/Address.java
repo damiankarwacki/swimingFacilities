@@ -1,20 +1,14 @@
 package com.sport.SportFacilities.models;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Address {
-    
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -24,7 +18,8 @@ public class Address {
     private String city;
     @NonNull
     private String postCode;
-    
-    @OneToOne(mappedBy = "address")
+
+//    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     private SportObject sportObject;
 }

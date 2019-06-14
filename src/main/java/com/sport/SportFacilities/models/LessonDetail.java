@@ -1,5 +1,6 @@
 package com.sport.SportFacilities.models;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,11 @@ import java.time.LocalDate;
 public class LessonDetail {
     
     @Id
+    @GeneratedValue
     private Integer id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+//    @MapsId
     private Lesson lesson;
  
     @NonNull

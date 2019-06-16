@@ -18,7 +18,7 @@ public interface LessonRepository extends CrudRepository<Lesson, Integer> {
 //    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
 //    Optional<Set<Lesson>> findAllByLessonType(@Param("lessonType") LessonType lessonType);
 
-//    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
+    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
     Optional<Set<Lesson>> findAllByLessonDetailLessonType(LessonType lessonType);
     
     Optional<Set<Lesson>> findAllByOrderDate(LocalDate orderDate);

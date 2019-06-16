@@ -13,6 +13,7 @@ public class SportObject {
     @Id
     @GeneratedValue
     @Getter
+    @Setter
     private Integer id;
     
     @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
@@ -21,9 +22,9 @@ public class SportObject {
     @NonNull
     @Setter
     @Getter
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
-                  optional = false,
-                  orphanRemoval = true)
+    @OneToOne(mappedBy = "sportObject", cascade = CascadeType.ALL,
+            optional = false,
+            orphanRemoval = true)
     private Address address;
 
     @NonNull

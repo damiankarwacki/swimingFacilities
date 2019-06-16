@@ -1,5 +1,6 @@
 package com.sport.SportFacilities.models;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

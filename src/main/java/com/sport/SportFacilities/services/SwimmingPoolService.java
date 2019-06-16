@@ -22,6 +22,7 @@ public class SwimmingPoolService {
     }
 
     public SwimmingPool createSwimmingPool(SwimmingPool swimmingPool){
+//        todo [OMÓWIĆ Z DAMIANEM]
 //        Pomyślałem że tu powinno być saveAll() żeby była możliwość zapisania więcej niż jednego na raz nie?
         return swimmingPoolRepository.save(swimmingPool);
     }

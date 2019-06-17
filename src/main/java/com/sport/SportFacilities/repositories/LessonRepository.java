@@ -19,7 +19,7 @@ public interface LessonRepository extends CrudRepository<Lesson, Integer> {
 //    Optional<Set<Lesson>> findAllByLessonType(@Param("lessonType") LessonType lessonType);
 
     @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
-    Optional<Set<Lesson>> findAllByLessonDetailLessonType(LessonType lessonType);
+    Optional<Set<Lesson>> findAllByLessonDetailLessonType(@Param("lessonType") LessonType lessonType);
     
     Optional<Set<Lesson>> findAllByOrderDate(LocalDate orderDate);
     

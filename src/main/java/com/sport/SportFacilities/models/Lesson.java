@@ -8,8 +8,8 @@ import java.util.Set;
 
 @Entity
 @Builder
-@RequiredArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Lesson {
     
@@ -31,12 +31,12 @@ public class Lesson {
     private LessonDetail lessonDetail;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")
     private SwimmingPool swimmingPool;
 }

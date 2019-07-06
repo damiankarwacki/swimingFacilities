@@ -7,9 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Shared
+import org.assertj.core.util.Sets
 import spock.lang.Specification
+import spock.lang.Stepwise
+
+import java.sql.SQLException
 
 @SpringBootTest
+@Stepwise
+//Stepwise zapewnia, że testy będą wykonywane w kolejności i jeśli jeden nie przejdzie to dalsze też nie
 class SwimmingPoolRepositoryTest extends Specification {
     
     SportObject sportObject = new SportObject(new Address(),"Object")
@@ -34,6 +40,14 @@ class SwimmingPoolRepositoryTest extends Specification {
         swimmingPools = Collections.emptySet()
     }
     
+    def "Check if database is up"(){
+        when:
+            swimmingPoolRepository.existsById(1)
+        then:
+            notThrown(SQLException)
+        
+    }
+    
     @Transactional
     def "should return swimming pools with given lanes quantity"() {
         given:
@@ -41,7 +55,7 @@ class SwimmingPoolRepositoryTest extends Specification {
         when:
             Set<SwimmingPool> swimmingPoolsDb = swimmingPoolRepository.findAllByLanesQuantity(4).orElse(Collections.emptySet())
         then:
-            swimmingPoolsDb[0] == swimmingPoolLanes4
+            swimmingPoolsDb == Sets.newLinkedHashSet(swimmingPoolLanes4)
             
     }
 
@@ -52,6 +66,6 @@ class SwimmingPoolRepositoryTest extends Specification {
         when:
             Set<SwimmingPool> swimmingPoolsDb = swimmingPoolRepository.findAllByDepth(2).orElse(Collections.emptySet())
         then:
-            swimmingPoolsDb[0] == swimmingPoolDepth2
+            swimmingPoolsDb == Sets.newLinkedHashSet(swimmingPoolDepth2)
     }
 }

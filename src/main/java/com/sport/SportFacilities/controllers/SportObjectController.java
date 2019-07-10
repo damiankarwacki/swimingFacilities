@@ -1,7 +1,6 @@
 package com.sport.SportFacilities.controllers;
 
 import com.google.common.base.Strings;
-import com.sport.SportFacilities.exceptions.SportObjectNotFoundException;
 import com.sport.SportFacilities.models.SportObject;
 import com.sport.SportFacilities.services.SportObjectService;
 import com.sport.SportFacilities.utils.HateoasHelper;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestController

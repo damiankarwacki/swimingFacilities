@@ -15,18 +15,20 @@ public class SportObject {
     @Getter
     @Setter
     private Integer id;
-    
+
+    @NonNull
+    @Getter
+    @Setter
+    private String name;
     @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
     private Set<SwimmingPool> swimmingPool;
 
     @NonNull
     @Setter
     @Getter
-    @OneToOne(mappedBy = "sportObject", cascade = CascadeType.ALL,
-            optional = false,
-            orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL,
+            optional = false, orphanRemoval = true)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @NonNull
-    private String name;
 }

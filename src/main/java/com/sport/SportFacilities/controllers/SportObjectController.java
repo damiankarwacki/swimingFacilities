@@ -5,12 +5,17 @@ import com.sport.SportFacilities.models.SportObject;
 import com.sport.SportFacilities.services.SportObjectService;
 import com.sport.SportFacilities.utils.HateoasHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Set;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/sport-objects")
@@ -23,21 +28,30 @@ public class SportObjectController {
         this.sportObjectService = sportObjectService;
     }
 
-    @GetMapping
-    public ResponseEntity getSportObjectsWithGivenCondition(@RequestParam(value = "city", required = false) String city) throws Exception {
-        Set<SportObject> sportObjects;
-        if (Strings.isNullOrEmpty(city)){
-            sportObjects = sportObjectService.getAllSportObjects();
-        } else {
-            sportObjects = sportObjectService.getAllSportObjectsByCity(city);
-        }
+    @GetMapping()
+    public ResponseEntity getAllSportObjects() {
+        Set<SportObject> sportObjects = sportObjectService.getAllSportObjects();
+        return ResponseEntity.ok(sportObjects);
+    }
+
+    @GetMapping(params = {"city"})
+    public ResponseEntity getSportObjectsWithGivenCondition(@RequestParam String city) throws Exception {
+        Set<SportObject> sportObjects = sportObjectService.getAllSportObjectsByCity(city);
         return ResponseEntity.ok(sportObjects);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getSportObjectById(@PathVariable Integer id) {
         SportObject sportObject = sportObjectService.getSportObjectById(id);
-        return ResponseEntity.ok(sportObject);
+        // Resource umożliwia dodawanie linków
+        Resource<SportObject> resource = new Resource<>(sportObject);
+        // Dla przykładu:
+        // Do zwracanego modelu dodany jest też link umożliwiający pobranie wszystkich istniejących obiektów
+        // Link wygenerowany jest na podstawie metody getAllSportObjects i nazwany all-sport-objects
+        Link link = linkTo(methodOn(SportObjectController.class).getAllSportObjects())
+                .withRel("all-sport-objects");
+        resource.add(link);
+        return ResponseEntity.ok(resource);
     }
 
     @PostMapping()

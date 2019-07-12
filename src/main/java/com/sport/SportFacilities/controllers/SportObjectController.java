@@ -16,8 +16,12 @@ import java.util.Set;
 @RequestMapping("/sport-objects")
 public class SportObjectController {
 
+    private SportObjectService sportObjectService;
+
     @Autowired
-    SportObjectService sportObjectService;
+    public SportObjectController(SportObjectService sportObjectService) {
+        this.sportObjectService = sportObjectService;
+    }
 
     @GetMapping
     public ResponseEntity getSportObjectsWithGivenCondition(@RequestParam(value = "city", required = false) String city) throws Exception {

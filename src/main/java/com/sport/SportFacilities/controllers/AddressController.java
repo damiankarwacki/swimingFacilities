@@ -18,8 +18,12 @@ import java.util.Set;
 @RequestMapping("/addresses")
 public class AddressController {
 
-    @Autowired
     AddressService addressService;
+
+    @Autowired
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
 
     @GetMapping()
     public ResponseEntity getAllAddresses(){

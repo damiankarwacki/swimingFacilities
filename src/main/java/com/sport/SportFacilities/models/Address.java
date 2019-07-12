@@ -24,8 +24,7 @@ public class Address {
     @Getter
     private String postCode;
 
-//    @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "address")
     private SportObject sportObject;
     
     public Address(Integer id, Address address) {

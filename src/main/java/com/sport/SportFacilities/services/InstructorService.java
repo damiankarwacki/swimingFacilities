@@ -4,10 +4,12 @@ import com.google.common.collect.Sets;
 import com.sport.SportFacilities.models.Instructor;
 import com.sport.SportFacilities.repositories.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+@Service
 public class InstructorService {
     private InstructorRepository instructorRepository;
     

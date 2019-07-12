@@ -1,11 +1,14 @@
 package com.sport.SportFacilities.services;
 
 import com.google.common.collect.Sets;
+import com.sport.SportFacilities.exceptions.SportObjectNotFoundException;
 import com.sport.SportFacilities.models.SportObject;
 import com.sport.SportFacilities.repositories.SportObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -25,15 +28,17 @@ public class SportObjectService {
     }
     
     public SportObject getSportObjectById(Integer id){
-        return sportObjectRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return sportObjectRepository.findById(id)
+                .orElseThrow(() -> new SportObjectNotFoundException("id",String.valueOf(id)));
     }
-    
+
     public Set<SportObject> getAllSportObjects(){
         return Sets.newHashSet(sportObjectRepository.findAll());
     }
-    
+
     public Set<SportObject> getAllSportObjectsByCity(String city){
-        return sportObjectRepository.findAllByCity(city).orElse(Collections.emptySet());
+        return sportObjectRepository.findAllByCity(city)
+                .orElseThrow(() -> new SportObjectNotFoundException("city",city));
     }
     
     public SportObject editSportObject(SportObject sportObject){

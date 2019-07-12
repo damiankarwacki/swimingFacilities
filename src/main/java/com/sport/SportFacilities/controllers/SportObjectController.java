@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Set;
 
@@ -36,14 +37,14 @@ public class SportObjectController {
     }
 
     @PostMapping()
-    public ResponseEntity createSportObject(@RequestBody SportObject sportObject) {
+    public ResponseEntity createSportObject(@Valid @RequestBody SportObject sportObject) {
         SportObject createdSportObject = sportObjectService.createNewSportObject(sportObject);
         URI uri = HateoasHelper.getUriWithPathAndParams("/{id}", createdSportObject.getId());
         return ResponseEntity.created(uri).body(createdSportObject);
     }
 
     @PutMapping()
-    public ResponseEntity editSportObject(@RequestBody SportObject sportObject) {
+    public ResponseEntity editSportObject(@Valid @RequestBody SportObject sportObject) {
         SportObject updatedSportObject = sportObjectService.editSportObject(sportObject);
         return ResponseEntity.ok(updatedSportObject);
     }

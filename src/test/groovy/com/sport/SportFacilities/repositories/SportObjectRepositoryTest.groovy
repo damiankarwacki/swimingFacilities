@@ -27,7 +27,7 @@ class SportObjectRepositoryTest extends Specification {
     
     def setup(){
         address = new Address("Street","City","PostCode")
-        sportObject = new SportObject(address,"SportObject")
+        sportObject = new SportObject("SportObject",address)
     }
     
     def "Check if database is up"(){

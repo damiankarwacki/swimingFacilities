@@ -24,8 +24,8 @@ class LessonRepositoryTest extends Specification {
     @Autowired
     SwimmingPoolRepository swimmingPoolRepository
     
-    SportObject sportObject1 = new SportObject(new Address("street", "city", "code"),"Object1")
-    SportObject sportObject2 = new SportObject(new Address("street", "city", "code"), "Object2")
+    SportObject sportObject1 = new SportObject("Object1",new Address("street", "city", "code"))
+    SportObject sportObject2 = new SportObject("Object2",new Address("street", "city", "code"))
     SwimmingPool swimmingPoolOnSportObject1 = new SwimmingPool(4,50,2, sportObject1)
     SwimmingPool swimmingPoolOnSportObject2 = new SwimmingPool(4,50,2, sportObject2)
     Instructor instructor1 = new Instructor("name1","surname1","phone1")

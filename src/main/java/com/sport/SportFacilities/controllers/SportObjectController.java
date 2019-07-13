@@ -1,9 +1,9 @@
 package com.sport.SportFacilities.controllers;
 
-import com.google.common.base.Strings;
 import com.sport.SportFacilities.models.SportObject;
 import com.sport.SportFacilities.services.SportObjectService;
-import com.sport.SportFacilities.utils.HateoasHelper;
+import com.sport.SportFacilities.utils.HateoasUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -19,13 +19,16 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/sport-objects")
+@AllArgsConstructor
 public class SportObjectController {
 
     private SportObjectService sportObjectService;
+    private HateoasUtils hateoasUtils;
 
     @Autowired
     public SportObjectController(SportObjectService sportObjectService) {
         this.sportObjectService = sportObjectService;
+        this.hateoasUtils = new HateoasUtils();
     }
 
     @GetMapping()
@@ -35,7 +38,7 @@ public class SportObjectController {
     }
 
     @GetMapping(params = {"city"})
-    public ResponseEntity getSportObjectsWithGivenCondition(@RequestParam String city) throws Exception {
+    public ResponseEntity getAllSportObjectFromCity(@RequestParam String city) throws Exception {
         Set<SportObject> sportObjects = sportObjectService.getAllSportObjectsByCity(city);
         return ResponseEntity.ok(sportObjects);
     }
@@ -48,16 +51,16 @@ public class SportObjectController {
         // Dla przykładu:
         // Do zwracanego modelu dodany jest też link umożliwiający pobranie wszystkich istniejących obiektów
         // Link wygenerowany jest na podstawie metody getAllSportObjects i nazwany all-sport-objects
-        Link link = linkTo(methodOn(SportObjectController.class).getAllSportObjects())
+        Link linkForGettingAllSportObjects = linkTo(methodOn(SportObjectController.class).getAllSportObjects())
                 .withRel("all-sport-objects");
-        resource.add(link);
+        resource.add(linkForGettingAllSportObjects);
         return ResponseEntity.ok(resource);
     }
 
     @PostMapping()
     public ResponseEntity createSportObject(@Valid @RequestBody SportObject sportObject) {
         SportObject createdSportObject = sportObjectService.createNewSportObject(sportObject);
-        URI uri = HateoasHelper.getUriWithPathAndParams("/{id}", createdSportObject.getId());
+        URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", createdSportObject.getId());
         return ResponseEntity.created(uri).body(createdSportObject);
     }
 

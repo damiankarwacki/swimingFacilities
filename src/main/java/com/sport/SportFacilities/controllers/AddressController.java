@@ -3,13 +3,12 @@ package com.sport.SportFacilities.controllers;
 
 import com.sport.SportFacilities.models.Address;
 import com.sport.SportFacilities.services.AddressService;
-import com.sport.SportFacilities.utils.HateoasHelper;
+import com.sport.SportFacilities.utils.HateoasUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 //Kontroler nie potrzebny, zarządzanie adresami powinno odbywać się wewnątrz kontrollera SportObject
@@ -18,11 +17,13 @@ import java.util.Set;
 @RequestMapping("/addresses")
 public class AddressController {
 
-    AddressService addressService;
+    private AddressService addressService;
+    private HateoasUtils hateoasUtils;
 
     @Autowired
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
+        this.hateoasUtils = new HateoasUtils();
     }
 
     @GetMapping()
@@ -41,8 +42,7 @@ public class AddressController {
     @PostMapping()
     public ResponseEntity createAddress(@RequestBody Address address){
             Address createdAddress = addressService.createAddress(address);
-            URI uri = HateoasHelper
-                    .getUriWithPathAndParams("/{id}", createdAddress.getId());
+            URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", createdAddress.getId());
             return ResponseEntity.created(uri).body(createdAddress);
     }
 

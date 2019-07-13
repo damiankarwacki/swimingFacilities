@@ -5,7 +5,7 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExceptionHelper {
+public class ExceptionUtils {
 
     public static final String extractErrorMessageFromBindingResult(BindingResult bindingResult){
         List<String> errors = new ArrayList<>();

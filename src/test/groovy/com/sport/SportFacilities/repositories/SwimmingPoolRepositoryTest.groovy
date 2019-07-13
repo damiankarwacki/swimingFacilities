@@ -18,7 +18,7 @@ import java.sql.SQLException
 //Stepwise zapewnia, że testy będą wykonywane w kolejności i jeśli jeden nie przejdzie to dalsze też nie
 class SwimmingPoolRepositoryTest extends Specification {
     
-    SportObject sportObject = new SportObject(new Address(),"Object")
+    SportObject sportObject = new SportObject("Object",new Address())
     
     @Autowired
     SwimmingPoolRepository swimmingPoolRepository

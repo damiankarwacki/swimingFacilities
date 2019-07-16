@@ -15,10 +15,13 @@ public class LessonDetail {
     
     @Id
     @GeneratedValue
+    @Getter
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-//    @MapsId
+    @OneToOne(
+//            fetch = FetchType.LAZY
+            mappedBy = "lessonDetail"
+    )
     private Lesson lesson;
  
     @NonNull

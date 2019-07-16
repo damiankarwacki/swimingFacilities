@@ -23,11 +23,12 @@ public class Lesson {
     @ManyToMany(mappedBy = "lessons")
     private Set<Customer> customers;
     
-    @OneToOne(mappedBy = "lesson",
-                  cascade = CascadeType.ALL,
-                  fetch = FetchType.LAZY,
-                  optional = false,
-                  orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL,
+              fetch = FetchType.LAZY
+//              optional = false, //nie może być 'false' skoro w testach dodajemy obiekty bez tego pola - baza nie chce się postawić
+//              orphanRemoval = true
+    )
+    @JoinColumn(name = "lessondetail_id", referencedColumnName = "id")
     private LessonDetail lessonDetail;
 
     @NonNull

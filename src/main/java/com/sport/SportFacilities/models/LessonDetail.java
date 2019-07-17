@@ -25,9 +25,11 @@ public class LessonDetail {
  
     @NonNull
     @Enumerated(EnumType.STRING)
+    @Getter
     private LessonType lessonType;
     
     @NonNull
+    @Getter
     private Float price;
 
     @NonNull

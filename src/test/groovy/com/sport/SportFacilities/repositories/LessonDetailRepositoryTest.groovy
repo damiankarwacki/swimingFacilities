@@ -22,7 +22,6 @@ class LessonDetailRepositoryTest extends Specification {
     @Autowired
     LessonDetailRepository lessonDetailRepository
 
-    LocalDate orderDate = LocalDate.now()
     LocalDate orderDate1 = LocalDate.now().plusDays(1)
     LocalDate orderDate2 = LocalDate.now().plusDays(2)
     LessonType lessonType = LessonType.CRAWL
@@ -30,18 +29,20 @@ class LessonDetailRepositoryTest extends Specification {
     LessonType lessonType2 = LessonType.FROG
 
     @Shared
-    LessonDetail lessonDetail = new LessonDetail(lessonType, 122, orderDate1)
+    LessonDetail lessonDetail
     @Shared
-    LessonDetail lessonDetail1 = new LessonDetail(lessonType1, 123, orderDate1)
+    LessonDetail lessonDetail1
     @Shared
-    LessonDetail lessonDetail2 = new LessonDetail(lessonType2, 124, orderDate2)
+    LessonDetail lessonDetail2
 
     @Shared
     Set<LessonDetail> lessonDetails
 
     def setup(){
+        lessonDetail = new LessonDetail(lessonType, 122, orderDate1)
+        lessonDetail1 = new LessonDetail(lessonType1, 123, orderDate1)
+        lessonDetail2 = new LessonDetail(lessonType2, 124, orderDate2)
         lessonDetails = [lessonDetail, lessonDetail1, lessonDetail2]
-        lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
     }
 
 
@@ -59,16 +60,32 @@ class LessonDetailRepositoryTest extends Specification {
     }
 
     def "should return all lesson details by given price"(){
+        given:
+            lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
         when:
             Set<LessonDetail> lessonDetailsFromDb = lessonDetailRepository.findAllByPrice(122).orElse(Collections.emptySet())
         then:
-            lessonDetailsFromDb == Sets.newLinkedHashSet(lessonDetail)
+            lessonDetailsFromDb.forEach{ld -> ld.getPrice() == 122}
     }
 
+    //Taka logika jest dodawana dopiero w serwisie
 // should return exception if given price is negative
 
-// should return all in a given price range
-
-// should return all with a given lesson type
+    def "should return all in a given price range"(){
+        given:
+            lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
+        when:
+            Set<LessonDetail> lessonDetailsFromDb = lessonDetailRepository.findAllByPriceBetween(122,123).orElse(Collections.emptySet())
+        then:
+            lessonDetailsFromDb.forEach{ld -> ld.getPrice() >= 122 && ld.getPrice() <= 123}
+    }
+    def "should return all with a given lesson type"(){
+        given:
+            lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
+        when:
+            Set<LessonDetail> lessonDetailsFromDb = lessonDetailRepository.findAllByLessonType(LessonType.BUTTERFLY).orElse(Collections.emptySet())
+        then:
+            lessonDetailsFromDb.forEach{ld -> ld.getLessonType() == LessonType.BUTTERFLY}
+    }
 
 }

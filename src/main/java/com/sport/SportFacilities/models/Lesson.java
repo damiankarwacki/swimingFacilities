@@ -18,6 +18,7 @@ public class Lesson {
     private Integer id;
     
     @NonNull
+    @Getter
     private LocalDate orderDate;
     
     @ManyToMany(mappedBy = "lessons")
@@ -33,10 +34,12 @@ public class Lesson {
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
+    @Getter
     private Instructor instructor;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")
+    @Getter
     private SwimmingPool swimmingPool;
 }

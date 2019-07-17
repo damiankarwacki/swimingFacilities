@@ -14,7 +14,7 @@ import java.sql.SQLException
 import java.time.LocalDate
 
 @SpringBootTest
-//@Stepwise
+@Stepwise
 class LessonRepositoryTest extends Specification {
     
     @Autowired

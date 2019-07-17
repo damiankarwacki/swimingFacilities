@@ -1,4 +1,4 @@
-package groovy.com.sport.SportFacilities.repositories
+package com.sport.SportFacilities.repositories
 
 import com.sport.SportFacilities.models.LessonDetail
 import com.sport.SportFacilities.models.LessonType

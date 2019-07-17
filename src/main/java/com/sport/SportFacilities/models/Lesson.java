@@ -24,11 +24,10 @@ public class Lesson {
     private Set<Customer> customers;
     
     @OneToOne(cascade = CascadeType.ALL,
-              fetch = FetchType.LAZY
-//              optional = false, //nie może być 'false' skoro w testach dodajemy obiekty bez tego pola - baza nie chce się postawić
-//              orphanRemoval = true
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
-    @JoinColumn(name = "lessondetail_id", referencedColumnName = "id")
+    @JoinColumn(name = "lesson_detail_id", referencedColumnName = "id")
     private LessonDetail lessonDetail;
 
     @NonNull

@@ -19,7 +19,6 @@ public class LessonDetail {
     private Integer id;
 
     @OneToOne(
-//            fetch = FetchType.LAZY
             mappedBy = "lessonDetail"
     )
     private Lesson lesson;

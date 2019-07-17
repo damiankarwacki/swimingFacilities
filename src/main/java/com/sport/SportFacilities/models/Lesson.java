@@ -15,6 +15,7 @@ public class Lesson {
     
     @Id
     @GeneratedValue
+    @Getter
     private Integer id;
     
     @NonNull
@@ -29,6 +30,7 @@ public class Lesson {
             orphanRemoval = true
     )
     @JoinColumn(name = "lesson_detail_id", referencedColumnName = "id")
+    @Getter
     private LessonDetail lessonDetail;
 
     @NonNull
@@ -42,4 +44,19 @@ public class Lesson {
     @JoinColumn(name = "swimming_pool_id")
     @Getter
     private SwimmingPool swimmingPool;
+
+    public Lesson(@NonNull LocalDate orderDate, LessonDetail lessonDetail, @NonNull Instructor instructor, @NonNull SwimmingPool swimmingPool) {
+        this.orderDate = orderDate;
+        this.lessonDetail = lessonDetail;
+        this.instructor = instructor;
+        this.swimmingPool = swimmingPool;
+    }
+
+    public Lesson(Integer id, Lesson lesson){
+        this.id = id;
+        this.orderDate = lesson.getOrderDate();
+        this.lessonDetail = lesson.getLessonDetail();
+        this.instructor = lesson.getInstructor();
+        this.swimmingPool = lesson.getSwimmingPool();
+    }
 }

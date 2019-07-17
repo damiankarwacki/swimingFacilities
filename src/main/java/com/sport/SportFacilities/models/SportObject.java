@@ -31,4 +31,8 @@ public class SportObject {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    public SportObject(Integer id, SportObject sportObject) {
+        this.id = id;
+        this.address = sportObject.getAddress();
+    }
 }

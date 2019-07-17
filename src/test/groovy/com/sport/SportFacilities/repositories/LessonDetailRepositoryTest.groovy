@@ -59,6 +59,7 @@ class LessonDetailRepositoryTest extends Specification {
         lessonDetails = Collections.emptySet()
     }
 
+    @Transactional
     def "should return all lesson details by given price"(){
         given:
             lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
@@ -71,6 +72,7 @@ class LessonDetailRepositoryTest extends Specification {
     //Taka logika jest dodawana dopiero w serwisie
 // should return exception if given price is negative
 
+    @Transactional
     def "should return all in a given price range"(){
         given:
             lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}
@@ -79,6 +81,7 @@ class LessonDetailRepositoryTest extends Specification {
         then:
             lessonDetailsFromDb.forEach{ld -> ld.getPrice() >= 122 && ld.getPrice() <= 123}
     }
+    @Transactional
     def "should return all with a given lesson type"(){
         given:
             lessonDetails.stream().forEach{ld -> lessonDetailRepository.save(ld)}

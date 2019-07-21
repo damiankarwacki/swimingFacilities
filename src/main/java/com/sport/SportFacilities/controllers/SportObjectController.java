@@ -38,7 +38,7 @@ public class SportObjectController {
     }
 
     @GetMapping(params = {"city"})
-    public ResponseEntity getAllSportObjectFromCity(@RequestParam String city) throws Exception {
+    public ResponseEntity getAllSportObjectFromCity(@RequestParam String city) {
         Set<SportObject> sportObjects = sportObjectService.getAllSportObjectsByCity(city);
         return ResponseEntity.ok(sportObjects);
     }

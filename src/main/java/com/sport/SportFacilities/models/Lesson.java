@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+//TODO Damian, walidacja pól
 @Entity
 @Builder
 @AllArgsConstructor

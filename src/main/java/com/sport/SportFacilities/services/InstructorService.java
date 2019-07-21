@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+//TODO Krzychu stworzyć controller, stworzyć wyjątek, dopisać testy jednostkowe do obługi błedów
 @Service
 public class InstructorService {
     private InstructorRepository instructorRepository;
@@ -21,8 +22,7 @@ public class InstructorService {
     public Instructor createInstructor(Instructor Instructor){
         return instructorRepository.save(Instructor);
     }
-    
-    //TODO opracować testowanie dla delete
+
     public void deleteInstructor(Instructor Instructor){
         instructorRepository.delete(Instructor);
     }

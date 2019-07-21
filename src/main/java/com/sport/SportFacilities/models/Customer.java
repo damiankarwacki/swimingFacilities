@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
-
+//TODO Krzychu, walidacja pól
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor

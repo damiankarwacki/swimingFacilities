@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+//TODO Damian Karwacki stworzyć controller, stworzyć wyjątek, dopisać testy jednostkowe do obługi błedów
 @Service
 public class LessonService {
 

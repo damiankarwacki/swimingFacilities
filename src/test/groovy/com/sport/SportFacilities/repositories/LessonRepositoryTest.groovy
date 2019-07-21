@@ -24,35 +24,35 @@ class LessonRepositoryTest extends Specification {
     @Autowired
     SwimmingPoolRepository swimmingPoolRepository
     
-    SportObject sportObject1 = new SportObject(new Address("street", "city", "code"),"Object1")
-    SportObject sportObject2 = new SportObject(new Address("street", "city", "code"), "Object2")
-    SwimmingPool swimmingPoolOnSportObject1 = new SwimmingPool(4,50,2, sportObject1)
-    SwimmingPool swimmingPoolOnSportObject2 = new SwimmingPool(4,50,2, sportObject2)
-    Instructor instructor1 = new Instructor("name1","surname1","phone1")
-    Instructor instructor2 = new Instructor("name2","surname2","phone2")
-    LocalDate orderDate = LocalDate.now()
-    LocalDate orderDate1 = LocalDate.now().plusDays(1)
-    LessonType lessonType = LessonType.CRAWL
-    LessonType lessonType1 = LessonType.BUTTERFLY
-    LessonDetail lessonDetail = new LessonDetail(lessonType, 123, orderDate1)
-    LessonDetail lessonDetail1 = new LessonDetail(lessonType1, 123, orderDate1)
+    private final SportObject sportObject1 = new SportObject("Object1",new Address("street", "city", "code"))
+    private final SportObject sportObject2 = new SportObject("Object2",new Address("street", "city", "code"))
+    private final SwimmingPool swimmingPoolOnSportObject1 = new SwimmingPool(4,50,2, sportObject1)
+    private final SwimmingPool swimmingPoolOnSportObject2 = new SwimmingPool(4,50,2, sportObject2)
+    private final Instructor instructor1 = new Instructor("name1","surname1","phone1")
+    private final Instructor instructor2 = new Instructor("name2","surname2","phone2")
+    private final LocalDate orderDate = LocalDate.now()
+    private final LocalDate orderDate1 = LocalDate.now().plusDays(1)
+    private final LessonType lessonType = LessonType.CRAWL
+    private final LessonType lessonType1 = LessonType.BUTTERFLY
+    private final LessonDetail lessonDetail = new LessonDetail(lessonType, 123f, orderDate)
+    private final LessonDetail lessonDetail1 = new LessonDetail(lessonType1, 123f, orderDate1)
 
     @Shared
-    Lesson lessonOnObject1WithInstructor1
+    private Lesson lessonOnObject1WithInstructor1
     @Shared
-    Lesson lessonOnObject2WithInstructor2
+    private Lesson lessonOnObject2WithInstructor2
     @Shared
-    Lesson lessonOnObject2WithInstructor2WithOrderDate1
+    private Lesson lessonOnObject2WithInstructor2WithOrderDate1
     @Shared
-    Lesson lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail
+    private Lesson lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail
     @Shared
-    Lesson lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1
+    private Lesson lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1
     @Shared
-    Set<Lesson> lessons
+    private Set<Lesson> lessons
     
     @Transactional
     def setup(){
-        
+
         instructorRepository.save(instructor1)
         instructorRepository.save(instructor2)
         swimmingPoolRepository.save(swimmingPoolOnSportObject1)
@@ -87,45 +87,45 @@ class LessonRepositoryTest extends Specification {
                 lessonDetail(lessonDetail1).
                 build()
         
-        
-        
         lessons = [lessonOnObject1WithInstructor1, lessonOnObject2WithInstructor2, lessonOnObject2WithInstructor2WithOrderDate1, lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail, lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1]
-        lessons.stream().forEach { l -> lessonRepository.save(l) }
     }
     
     def cleanup() {
         lessons = Collections.emptySet()
     }
-    
+
     def "Check if database is up"(){
         when:
             lessonRepository.existsById(1)
         then:
             notThrown(SQLException)
-            
+
     }
 
     @Transactional
-    @PendingFeature
     def "should return all lessons in a given type"(){
+        given:
+            lessons.stream().forEach { l -> lessonRepository.save(l) }
         when:
-            Set<Lesson> lessonsFromDb = lessonRepository.findAllByLessonDetailLessonType(lessonType).orElse(Collections.emptySet())
+            Set<Lesson> lessonsFromDb = lessonRepository.findAllByLessonType(lessonType).orElse(Collections.emptySet())
         then:
-            lessonsFromDb ==  Sets.newLinkedHashSet(lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail)
+            lessonsFromDb == Sets.newLinkedHashSet(lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail)
     }
 
     @Transactional
-    @PendingFeature
-    //TODO Niepoprawne wyniki - zwraca encje które nie istnieją w bazie danych
     def "should return all lessons ordered at given date"(){
+        given:
+            lessons.stream().forEach { l -> lessonRepository.save(l) }
         when:
             Set<Lesson> lessonsFromDb = lessonRepository.findAllByOrderDate(orderDate1).orElse(Collections.emptySet())
         then:
-            lessonsFromDb ==  Sets.newLinkedHashSet(lessonOnObject2WithInstructor2WithOrderDate1,lessonOnObject2WithInstructor2WithOrderDate1,lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1)
+            lessonsFromDb == Sets.newLinkedHashSet(lessonOnObject2WithInstructor2WithOrderDate1,lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail,lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1)
     }
 
     @Transactional
     def "should return all lessons on given sport object"() {
+        given:
+            lessons.stream().forEach { l -> lessonRepository.save(l) }
         when:
             Set<Lesson> lessonsFromDb = lessonRepository.findAllBySportObject(sportObject1).orElse(Collections.emptySet())
         then:
@@ -134,6 +134,8 @@ class LessonRepositoryTest extends Specification {
 
     @Transactional
     def "should return all given instructor lessons"() {
+        given:
+            lessons.stream().forEach { l -> lessonRepository.save(l) }
         when:
             Set<Lesson> lessonsFromDb = lessonRepository.findAllByInstructor(instructor1).orElse(Collections.emptySet())
         then:

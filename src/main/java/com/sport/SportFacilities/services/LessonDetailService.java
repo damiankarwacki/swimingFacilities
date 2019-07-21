@@ -36,7 +36,7 @@ public class LessonDetailService {
         return lessonDetailRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public Set<LessonDetail> getLessonDetailsByPrice(Float price){
+    public Set<LessonDetail> getAllLessonDetailsByPrice(Float price){
         return lessonDetailRepository.findAllByPrice(price).orElse(Collections.emptySet());
     }
 

@@ -14,19 +14,15 @@ import java.util.Set;
 public interface LessonRepository extends CrudRepository<Lesson, Integer> {
 
 //    TODO Krzychu testy
-//    Dodałem set<lesson> bo przecież będą wszystkie po lesson Type
-//    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
-//    Optional<Set<Lesson>> findAllByLessonType(@Param("lessonType") LessonType lessonType);
+    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON l.lessonDetail = d WHERE d.lessonType = :lessonType")
+    Optional<Set<Lesson>> findAllByLessonType(@Param("lessonType") LessonType lessonType);
 
-    @Query("SELECT l FROM Lesson l JOIN LessonDetail d ON d.id = l.lessonDetail WHERE d.lessonType = :lessonType")
-    Optional<Set<Lesson>> findAllByLessonDetailLessonType(@Param("lessonType") LessonType lessonType);
-    
     Optional<Set<Lesson>> findAllByOrderDate(LocalDate orderDate);
-    
+
 //    TODO Damian testy
     @Query("SELECT l FROM Lesson l JOIN SwimmingPool s ON l.swimmingPool = s WHERE s.sportObject = :sportObject")
     Optional<Set<Lesson>> findAllBySportObject(@Param("sportObject") SportObject sportObject);
-    
+
     Optional<Set<Lesson>> findAllByInstructor(Instructor instructor);
-    
+
 }

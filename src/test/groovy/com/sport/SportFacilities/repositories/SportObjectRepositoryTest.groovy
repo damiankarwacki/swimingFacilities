@@ -63,14 +63,12 @@ class SportObjectRepositoryTest extends Specification {
     
     
     @Transactional
-    @PendingFeature
-    //TODO sport objects nie wrzucają się do bazy
     def "check if return all sport object in given city"() {
         given:
             Address addressInCity1 = new Address("Street1","City1","PostCode1")
             Address addressInCity2 = new Address("Street2","City1","PostCode2")
-            SportObject sportObjectInCity1 = new SportObject(addressInCity1,"sportObject")
-            SportObject sportObjectInCity2 = new SportObject(addressInCity2,"sportObject")
+            SportObject sportObjectInCity1 = new SportObject("sportObject",addressInCity1)
+            SportObject sportObjectInCity2 = new SportObject("sportObject",addressInCity2)
             Set<SportObject> sportObjects = [sportObjectInCity1, sportObjectInCity2]
             sportObjects.stream().forEach {s -> sportObjectRepository.save(s)}
         when:

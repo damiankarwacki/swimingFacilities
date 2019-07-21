@@ -61,12 +61,12 @@ class CustomerServiceTest extends Specification {
     
     def "Get all customeres should return all customeres from database"() {
         given:
-            Set<Customer> givenCustomeres = [new Customer(1,customer), new Customer(2,customer)]
-            customerRepository.findAll() >> givenCustomeres
+            Set<Customer> givenCustomers = [new Customer(1,customer), new Customer(2,customer)]
+            customerRepository.findAll() >> givenCustomers
             CustomerService customerService = new CustomerService(customerRepository)
         when:
-            Set<Customer> resultCustomeres = customerService.getAllCustomers()
+            Set<Customer> resultCustomers = customerService.getAllCustomers()
         then:
-            resultCustomeres == givenCustomeres
+            resultCustomers == givenCustomers
     }
 }

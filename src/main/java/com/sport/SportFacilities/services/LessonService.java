@@ -37,7 +37,7 @@ public class LessonService {
     }
 
     public Set<Lesson> getAllByLessonsByLessonType(LessonType lessonType){
-        return lessonRepository.findAllByLessonDetailLessonType(lessonType).orElse(Collections.emptySet());
+        return lessonRepository.findAllByLessonType(lessonType).orElse(Collections.emptySet());
     }
 
     public Set<Lesson> getAllLessonsByOrderDate(LocalDate orderDate){

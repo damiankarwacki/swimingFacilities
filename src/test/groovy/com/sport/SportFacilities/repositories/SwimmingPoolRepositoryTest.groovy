@@ -55,7 +55,7 @@ class SwimmingPoolRepositoryTest extends Specification {
         when:
             Set<SwimmingPool> swimmingPoolsDb = swimmingPoolRepository.findAllByLanesQuantity(4).orElse(Collections.emptySet())
         then:
-            swimmingPoolsDb == Sets.newLinkedHashSet(swimmingPoolLanes4)
+            swimmingPoolsDb.forEach { sp -> sp.getLanesQuantity() == 4}
             
     }
 
@@ -66,6 +66,6 @@ class SwimmingPoolRepositoryTest extends Specification {
         when:
             Set<SwimmingPool> swimmingPoolsDb = swimmingPoolRepository.findAllByDepth(2).orElse(Collections.emptySet())
         then:
-            swimmingPoolsDb == Sets.newLinkedHashSet(swimmingPoolDepth2)
+            swimmingPoolsDb.forEach{ sp -> sp.getDepth() == 2}
     }
 }

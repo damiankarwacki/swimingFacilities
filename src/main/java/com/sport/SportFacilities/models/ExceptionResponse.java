@@ -3,7 +3,6 @@ package com.sport.SportFacilities.models;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 

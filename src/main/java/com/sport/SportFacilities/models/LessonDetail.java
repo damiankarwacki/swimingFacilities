@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+//TODO Krzychu, walidacja pól
 @Entity
 @RequiredArgsConstructor
 @NoArgsConstructor

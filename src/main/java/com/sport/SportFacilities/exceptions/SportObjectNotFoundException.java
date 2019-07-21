@@ -12,4 +12,7 @@ public class SportObjectNotFoundException extends NoSuchElementException {
     public SportObjectNotFoundException(String parameterName, String parameterValue) {
         super("Cannot find sportObject with " + parameterName + "=" + parameterValue);
     }
+
+    public SportObjectNotFoundException() {
+    }
 }

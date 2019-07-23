@@ -18,24 +18,25 @@ public class InstructorService {
     public InstructorService(InstructorRepository InstructorRepository) {
         this.instructorRepository = InstructorRepository;
     }
-    
+
+//    zrobione
     public Instructor createInstructor(Instructor Instructor){
+        return instructorRepository.save(Instructor);
+    }
+//    zrobione
+    public Set<Instructor> getAllInstructors(){
+        return Sets.newHashSet(instructorRepository.findAll());
+    }
+//  zrobione
+    public Instructor getInstructorById(Integer id){
+        return instructorRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+//zrobione
+    public Instructor editInstructor(Instructor Instructor){
         return instructorRepository.save(Instructor);
     }
 
     public void deleteInstructor(Instructor Instructor){
         instructorRepository.delete(Instructor);
-    }
-    
-    public Instructor editInstructor(Instructor Instructor){
-        return instructorRepository.save(Instructor);
-    }
-    
-    public Instructor getInstructorById(Integer id){
-        return instructorRepository.findById(id).orElseThrow(NoSuchElementException::new);
-    }
-    
-    public Set<Instructor> getAllInstructors(){
-        return Sets.newHashSet(instructorRepository.findAll());
     }
 }

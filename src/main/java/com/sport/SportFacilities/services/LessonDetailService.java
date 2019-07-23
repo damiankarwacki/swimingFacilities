@@ -21,7 +21,6 @@ public class LessonDetailService {
         this.lessonDetailRepository = lessonDetailRepository;
     }
 
-//todo [OMOWIĆ Z DAMIANEM]
 
 //    czy w przypadku gdyby nie udało się stworzyć z jakiegoś powodu nie powinien rzucić wyjątkiem?
     public LessonDetail createLessonDetail(LessonDetail lessonDetail){

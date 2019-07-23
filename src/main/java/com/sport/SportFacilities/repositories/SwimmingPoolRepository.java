@@ -11,7 +11,6 @@ import java.util.Set;
 public interface SwimmingPoolRepository extends CrudRepository<SwimmingPool, Integer> {
 
 
-//    TODO Damian testy
     Optional<Set<SwimmingPool>> findAllByLanesQuantity(Integer lanesQuantity);
 
     Optional<Set<SwimmingPool>> findAllByDepth(Float depth);

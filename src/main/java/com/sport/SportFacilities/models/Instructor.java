@@ -3,8 +3,8 @@ package com.sport.SportFacilities.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
-//TODO Krzychu, walidacja pól
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -14,12 +14,18 @@ public class Instructor {
     @GeneratedValue
     @Getter
     private Integer id;
+
+    @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
     private String name;
+
+    @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
     private String surname;
+
+    @Pattern(regexp = "^[+][0-9 ]{1,}")
     @NonNull
     @Getter
     private String phone;

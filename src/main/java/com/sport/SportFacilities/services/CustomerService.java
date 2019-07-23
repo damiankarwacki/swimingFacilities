@@ -1,6 +1,7 @@
 package com.sport.SportFacilities.services;
 
 import com.google.common.collect.Sets;
+import com.sport.SportFacilities.exceptions.CustomerNotFoundException;
 import com.sport.SportFacilities.models.Customer;
 import com.sport.SportFacilities.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CustomerService {
     }
     
     public Customer getCustomerById(Integer id){
-        return customerRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return customerRepository.findById(id).orElseThrow(()-> new CustomerNotFoundException("id", String.valueOf(id)));
     }
     
     public Set<Customer> getAllCustomers(){

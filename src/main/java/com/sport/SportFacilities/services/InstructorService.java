@@ -1,6 +1,7 @@
 package com.sport.SportFacilities.services;
 
 import com.google.common.collect.Sets;
+import com.sport.SportFacilities.exceptions.InstructorNotFoundException;
 import com.sport.SportFacilities.models.Instructor;
 import com.sport.SportFacilities.repositories.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,18 @@ public class InstructorService {
         this.instructorRepository = InstructorRepository;
     }
 
-//    zrobione
     public Instructor createInstructor(Instructor Instructor){
         return instructorRepository.save(Instructor);
     }
-//    zrobione
+
     public Set<Instructor> getAllInstructors(){
         return Sets.newHashSet(instructorRepository.findAll());
     }
-//  zrobione
+
     public Instructor getInstructorById(Integer id){
-        return instructorRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return instructorRepository.findById(id).orElseThrow(()-> new InstructorNotFoundException("id", String.valueOf(id)));
     }
-//zrobione
+
     public Instructor editInstructor(Instructor Instructor){
         return instructorRepository.save(Instructor);
     }

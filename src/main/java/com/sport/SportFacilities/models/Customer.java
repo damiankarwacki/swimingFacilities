@@ -3,6 +3,8 @@ package com.sport.SportFacilities.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 //TODO Krzychu, walidacja pól
 @Entity
@@ -14,15 +16,23 @@ public class Customer {
     @GeneratedValue
     @Getter
     private Integer id;
+
+    @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
     private String name;
+
+    @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
     private String surname;
+
+    @Pattern(regexp = "^[+][0-9 ]{1,}")
     @NonNull
     @Getter
     private String phone;
+
+    @Email
     @NonNull
     @Getter
     private String email;

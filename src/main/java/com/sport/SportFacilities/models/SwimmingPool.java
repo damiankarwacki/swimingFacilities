@@ -3,9 +3,9 @@ package com.sport.SportFacilities.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.util.Set;
 
-//TODO Krzychu, walidacja pól
 @Entity
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -13,19 +13,23 @@ public class SwimmingPool {
     
     @Id
     @Getter
+    @Setter
     @GeneratedValue
     private Integer id;
     
     @Getter
     @NonNull
+    @Positive
     private Integer lanesQuantity;
     
     @Getter
     @NonNull
+    @Positive
     private Float lenght;
     
     @Getter
     @NonNull
+    @Positive
     private Float depth;
     
     @OneToMany(mappedBy = "swimmingPool",

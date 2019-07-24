@@ -17,7 +17,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/instructor")
+@RequestMapping("/instructors")
 public class InstructorController {
 
     private InstructorService instructorService;
@@ -51,9 +51,9 @@ public class InstructorController {
         return ResponseEntity.ok(resource);
     }
 
-    @PutMapping()
-    public ResponseEntity editInstructorById(@Valid @RequestBody Instructor instructor){
-        Instructor editedInstructor = instructorService.editInstructor(instructor);
+    @PutMapping("/{id}")
+    public ResponseEntity editInstructorById(@Valid @RequestBody Instructor instructor, @PathVariable Integer id){
+        Instructor editedInstructor = instructorService.editInstructor(instructor,id);
         URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", editedInstructor.getId());
         return ResponseEntity.created(uri).body(instructor);
     }

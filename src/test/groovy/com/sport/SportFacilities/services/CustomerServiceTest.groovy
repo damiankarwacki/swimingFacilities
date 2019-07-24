@@ -1,7 +1,8 @@
-package com.sport.SportFacilities.services
+package groovy.com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Customer
 import com.sport.SportFacilities.repositories.CustomerRepository
+import com.sport.SportFacilities.services.CustomerService
 import spock.lang.Shared
 import spock.lang.Specification
 

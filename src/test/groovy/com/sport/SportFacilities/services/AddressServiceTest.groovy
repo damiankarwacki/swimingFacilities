@@ -1,7 +1,8 @@
-package com.sport.SportFacilities.services
+package groovy.com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Address
 import com.sport.SportFacilities.repositories.AddressRepository
+import com.sport.SportFacilities.services.AddressService
 import spock.lang.Shared
 import spock.lang.Specification
 

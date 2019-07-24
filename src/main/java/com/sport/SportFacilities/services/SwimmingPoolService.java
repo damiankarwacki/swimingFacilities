@@ -1,13 +1,13 @@
 package com.sport.SportFacilities.services;
 
 import com.google.common.collect.Sets;
+import com.sport.SportFacilities.exceptions.SwimmingPoolNotFoundException;
 import com.sport.SportFacilities.models.SwimmingPool;
 import com.sport.SportFacilities.repositories.SwimmingPoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -27,7 +27,7 @@ public class SwimmingPoolService {
     }
 
     public SwimmingPool getSwimmingPoolById(Integer id){
-        return swimmingPoolRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return swimmingPoolRepository.findById(id).orElseThrow(() -> new SwimmingPoolNotFoundException("id", String.valueOf(id)));
     }
 
     public Set<SwimmingPool> getAllSwimmingPools(){
@@ -42,7 +42,8 @@ public class SwimmingPoolService {
         return swimmingPoolRepository.findAllByLanesQuantity(lanes).orElse(Collections.emptySet());
     }
 
-    public SwimmingPool editSwimmingPool(SwimmingPool swimmingPool){
+    public SwimmingPool editSwimmingPool(SwimmingPool swimmingPool, Integer id){
+        swimmingPool.setId(id);
         return swimmingPoolRepository.save(swimmingPool);
     }
 

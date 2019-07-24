@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
-//TODO Krzychu, walidacja pól
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -15,6 +14,7 @@ public class Customer {
     @Id
     @GeneratedValue
     @Getter
+    @Setter
     private Integer id;
 
     @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")

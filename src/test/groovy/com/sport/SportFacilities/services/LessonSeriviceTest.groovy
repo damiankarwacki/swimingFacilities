@@ -1,4 +1,4 @@
-package com.sport.SportFacilities.services
+package groovy.com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Address
 import com.sport.SportFacilities.models.Instructor
@@ -9,7 +9,6 @@ import com.sport.SportFacilities.models.SportObject
 import com.sport.SportFacilities.models.SwimmingPool
 import com.sport.SportFacilities.repositories.LessonRepository
 import com.sport.SportFacilities.services.LessonService
-import org.testng.collections.Sets
 import spock.lang.Shared
 import spock.lang.Specification
 

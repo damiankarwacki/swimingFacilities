@@ -99,6 +99,5 @@ class LessonDetailServiceTest extends Specification{
             resultLessonDetail.getId() == 1
     }
 
-//    todo jak testować usówanie z bazy?
 
 }

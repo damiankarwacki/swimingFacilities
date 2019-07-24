@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private CustomerService customerService;
@@ -42,9 +42,9 @@ public class CustomerController {
         return ResponseEntity.ok(customer);
     }
 
-    @PutMapping()
-    public ResponseEntity editCustomer(@RequestBody Customer customer){
-        Customer editedCustomer = customerService.editCustomer(customer);
+    @PutMapping("/{id}")
+    public ResponseEntity editCustomer(@RequestBody Customer customer, @PathVariable Integer id){
+        Customer editedCustomer = customerService.editCustomer(customer, id);
         URI uri = hateoasUtils.getUriWithPathAndParams("/{id}",editedCustomer.getId());
         return ResponseEntity.created(uri).body(editedCustomer);
     }

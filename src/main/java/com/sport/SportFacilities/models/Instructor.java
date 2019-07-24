@@ -13,6 +13,7 @@ public class Instructor {
     @Id
     @GeneratedValue
     @Getter
+    @Setter
     private Integer id;
 
     @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")

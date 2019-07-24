@@ -1,7 +1,8 @@
-package com.sport.SportFacilities.services
+package groovy.com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Instructor
 import com.sport.SportFacilities.repositories.InstructorRepository
+import com.sport.SportFacilities.services.InstructorService
 import spock.lang.Shared
 import spock.lang.Specification
 

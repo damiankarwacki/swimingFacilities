@@ -28,8 +28,8 @@ class LessonRepositoryTest extends Specification {
     private final SportObject sportObject2 = new SportObject("Object2",new Address("street", "city", "code"))
     private final SwimmingPool swimmingPoolOnSportObject1 = new SwimmingPool(4,50,2, sportObject1)
     private final SwimmingPool swimmingPoolOnSportObject2 = new SwimmingPool(4,50,2, sportObject2)
-    private final Instructor instructor1 = new Instructor("name1","surname1","phone1")
-    private final Instructor instructor2 = new Instructor("name2","surname2","phone2")
+    private final Instructor instructor1 = new Instructor("Nameone","Surnameone","+123123123")
+    private final Instructor instructor2 = new Instructor("Nametwo","Surnametwo","+123123123")
     private final LocalDate orderDate = LocalDate.now()
     private final LocalDate orderDate1 = LocalDate.now().plusDays(1)
     private final LessonType lessonType = LessonType.CRAWL
@@ -99,7 +99,6 @@ class LessonRepositoryTest extends Specification {
             lessonRepository.existsById(1)
         then:
             notThrown(SQLException)
-
     }
 
     @Transactional

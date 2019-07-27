@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Set;
 
 
-//TODO Krzychu, stworzyć controller, stworzyć wyjątek, dopisać testy jednostkowe do obługi błedów
 @Service
 public class SwimmingPoolService {
 

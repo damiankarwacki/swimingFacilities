@@ -32,7 +32,7 @@ class InstructorServiceTest extends Specification {
             instructorRepository.save(editedInstructor) >> editedInstructor
             InstructorService instructorService = new InstructorService(instructorRepository)
         when:
-            Instructor resultInstructor = instructorService.editInstructor(editedInstructor)
+            Instructor resultInstructor = instructorService.editInstructor(editedInstructor, 1)
         then:
             resultInstructor.equals(editedInstructor)
     }

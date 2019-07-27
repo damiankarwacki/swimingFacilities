@@ -3,6 +3,7 @@ package com.sport.SportFacilities.controllers;
 import com.sport.SportFacilities.models.Instructor;
 import com.sport.SportFacilities.services.InstructorService;
 import com.sport.SportFacilities.utils.HateoasUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -18,6 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/instructors")
+@AllArgsConstructor
 public class InstructorController {
 
     private InstructorService instructorService;

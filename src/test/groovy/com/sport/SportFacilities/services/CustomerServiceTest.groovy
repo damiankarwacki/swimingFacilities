@@ -32,7 +32,7 @@ class CustomerServiceTest extends Specification {
             customerRepository.save(editedCustomer) >> editedCustomer
             CustomerService customerService = new CustomerService(customerRepository)
         when:
-            Customer resultCustomer = customerService.editCustomer(editedCustomer)
+            Customer resultCustomer = customerService.editCustomer(editedCustomer, 1)
         then:
             resultCustomer.equals(editedCustomer)
     }

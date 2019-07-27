@@ -79,7 +79,7 @@ class SwimmingPoolServiceTest extends Specification{
             swimmingPoolRepository.save(editedSwimmingPool) >> editedSwimmingPool
             swimmingPoolService = new SwimmingPoolService(swimmingPoolRepository)
         when:
-            SwimmingPool returnedSwimmingPool = swimmingPoolService.editSwimmingPool(editedSwimmingPool)
+            SwimmingPool returnedSwimmingPool = swimmingPoolService.editSwimmingPool(editedSwimmingPool,1)
         then:
             returnedSwimmingPool.getId() == 1
     }

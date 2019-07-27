@@ -3,15 +3,22 @@ package com.sport.SportFacilities.controllers;
 import com.sport.SportFacilities.models.Customer;
 import com.sport.SportFacilities.services.CustomerService;
 import com.sport.SportFacilities.utils.HateoasUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Set;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/customers")
+@AllArgsConstructor
 public class CustomerController {
 
     private CustomerService customerService;
@@ -38,8 +45,11 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity getCustomerById(@PathVariable("id") Integer id){
+        Link linkToAllCustomers = linkTo(methodOn(CustomerController.class).getAllCustomers()).withRel("all-customers");
         Customer customer = customerService.getCustomerById(id);
-        return ResponseEntity.ok(customer);
+        Resource<Customer> resource = new Resource<>(customer);
+        resource.add(linkToAllCustomers);
+        return ResponseEntity.ok(resource);
     }
 
     @PutMapping("/{id}")

@@ -3,25 +3,22 @@ package com.sport.SportFacilities.models;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.Set;
 
-//TODO Damian, walidacja pól
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class SportObject {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
     private Integer id;
 
-    @Size(min = 2, message = "{validation.size.2}")
+    @Pattern(regexp = "^[A-Z0-9][A-Za-z0-9|\\s]*", message = "{validation.properName}")
     @NonNull
     @Getter
     @Setter
@@ -29,6 +26,7 @@ public class SportObject {
     @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
     private Set<SwimmingPool> swimmingPool;
 
+    @Valid
     @NonNull
     @Setter
     @Getter

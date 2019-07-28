@@ -3,6 +3,9 @@ package com.sport.SportFacilities.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,11 +24,14 @@ public class Lesson {
     
     @NonNull
     @Getter
+    @Size
+    @FutureOrPresent(message = "{validation.orderDate}")
     private LocalDate orderDate;
-    
+
     @ManyToMany(mappedBy = "lessons")
     private Set<Customer> customers;
-    
+
+    @Valid
     @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true

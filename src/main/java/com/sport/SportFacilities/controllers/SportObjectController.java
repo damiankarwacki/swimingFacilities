@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,13 +62,18 @@ public class SportObjectController {
     public ResponseEntity createSportObject(@Valid @RequestBody SportObject sportObject) {
         SportObject createdSportObject = sportObjectService.createNewSportObject(sportObject);
         URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", createdSportObject.getId());
-        return ResponseEntity.created(uri).body(createdSportObject);
+        Resource<SportObject> resource = new Resource<>(createdSportObject);
+        Link linkToUpdate = linkTo(methodOn(SportObjectController.class).editSportObject(createdSportObject.getId(),createdSportObject))
+                .withRel("edit-current-object");
+        resource.add(linkToUpdate);
+        return ResponseEntity.created(uri).body(resource);
     }
 
-    @PutMapping()
-    public ResponseEntity editSportObject(@Valid @RequestBody SportObject sportObject) {
-        SportObject updatedSportObject = sportObjectService.editSportObject(sportObject);
-        return ResponseEntity.ok(updatedSportObject);
+    @PutMapping("/{id}")
+    public ResponseEntity editSportObject(@PathVariable Integer id, @Valid @RequestBody SportObject sportObject) {
+        SportObject updatedSportObject = sportObjectService.editSportObject(id, sportObject);
+        URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", id);
+        return ResponseEntity.status(HttpStatus.OK).location(uri).body(updatedSportObject);
     }
 
     @DeleteMapping("/{id}")

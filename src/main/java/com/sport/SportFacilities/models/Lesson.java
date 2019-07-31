@@ -20,11 +20,11 @@ public class Lesson {
     @Id
     @GeneratedValue
     @Getter
+    @Setter
     private Integer id;
     
     @NonNull
     @Getter
-    @Size
     @FutureOrPresent(message = "{validation.orderDate}")
     private LocalDate orderDate;
 
@@ -38,12 +38,14 @@ public class Lesson {
     )
     @JoinColumn(name = "lesson_detail_id", referencedColumnName = "id")
     @Getter
+    @Setter
     private LessonDetail lessonDetail;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     @Getter
+    @Setter
     private Instructor instructor;
 
     @NonNull

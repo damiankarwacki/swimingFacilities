@@ -1,15 +1,19 @@
 package com.sport.SportFacilities.repositories
 
+import com.sport.SportFacilities.controllers.SportObjectController
 import com.sport.SportFacilities.models.Address
 import com.sport.SportFacilities.models.SportObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.MethodArgumentNotValidException
 import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
+import spock.lang.Unroll
 
+import javax.validation.ConstraintViolationException
 import java.sql.SQLException
 
 @SpringBootTest
@@ -26,7 +30,7 @@ class SportObjectRepositoryTest extends Specification {
     SportObject sportObject
     
     def setup(){
-        address = new Address("Street","City","PostCode")
+        address = new Address("Street","City","99-434")
         sportObject = new SportObject("SportObject",address)
     }
     
@@ -52,7 +56,7 @@ class SportObjectRepositoryTest extends Specification {
     @Transactional
     def "check if saved object will change id when setter called"() {
         given:
-            Address newAddress = new Address("NewStreet","NewCity","NewPostCode")
+            Address newAddress = new Address("NewStreet","NewCity","99-454")
         when:
             sportObjectRepository.save(sportObject)
             sportObject.setAddress(newAddress)
@@ -65,15 +69,15 @@ class SportObjectRepositoryTest extends Specification {
     @Transactional
     def "check if return all sport object in given city"() {
         given:
-            Address addressInCity1 = new Address("Street1","City1","PostCode1")
-            Address addressInCity2 = new Address("Street2","City1","PostCode2")
-            SportObject sportObjectInCity1 = new SportObject("sportObject",addressInCity1)
-            SportObject sportObjectInCity2 = new SportObject("sportObject",addressInCity2)
+            Address addressInCity1 = new Address("Street 1","City","99-400")
+            Address addressInCity2 = new Address("Street 2","Citytwo","99-401")
+            SportObject sportObjectInCity1 = new SportObject("SportObject",addressInCity1)
+            SportObject sportObjectInCity2 = new SportObject("SportObject",addressInCity2)
             Set<SportObject> sportObjects = [sportObjectInCity1, sportObjectInCity2]
             sportObjects.stream().forEach {s -> sportObjectRepository.save(s)}
         when:
-            Set<SportObject> sportObjectsFromDb = sportObjectRepository.findAllByCity("City1").orElse(Collections.emptySet())
+            Set<SportObject> sportObjectsFromDb = sportObjectRepository.findAllByCity("City").orElse(Collections.emptySet())
         then:
-            sportObjectsFromDb == sportObjects
+            sportObjectsFromDb.forEach({ c -> c.getAddress().getCity() == "City" })
     }
 }

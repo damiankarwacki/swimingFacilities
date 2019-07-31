@@ -127,9 +127,9 @@ class LessonSeriviceTest extends Specification {
             lessonRepository.save(editedLesson) >> editedLesson
             lessonService = new LessonService(lessonRepository)
         when:
-            Lesson returnedLesson = lessonService.editLesson(editedLesson)
+            Lesson returnedLesson = lessonService.editLesson(1,editedLesson)
         then:
-            returnedLesson.getId() == 1
+            returnedLesson == editedLesson
     }
 
 }

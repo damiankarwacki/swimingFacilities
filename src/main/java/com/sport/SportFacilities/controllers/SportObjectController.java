@@ -78,8 +78,7 @@ public class SportObjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteSportObject(@PathVariable Integer id) {
-        SportObject sportObject = sportObjectService.getSportObjectById(id);
-        sportObjectService.deleteSportObject(sportObject);
+        sportObjectService.deleteSportObjectById(id);
         return ResponseEntity.ok().build();
     }
 }

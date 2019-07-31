@@ -21,7 +21,7 @@ public class Address {
     @Getter
     private String street;
 
-    @Pattern(regexp = "^[A-Z][a-z]+", message = "{validation.city}")
+    @Pattern(regexp = "^[A-Z][a-z]+|[A-Z][a-z]+(\\s[A-Z][a-z]+)+", message = "{validation.city}")
     @NonNull
     @Getter
     private String city;

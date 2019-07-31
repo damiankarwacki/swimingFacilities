@@ -1,4 +1,4 @@
-package groovy.com.sport.SportFacilities.services
+package com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Address
 import com.sport.SportFacilities.models.SportObject
@@ -72,7 +72,7 @@ class SportObjectServiceTest extends Specification {
             sportObjectRepository.save(editedSportObject) >> editedSportObject
             sportObjectService = new SportObjectService(sportObjectRepository)
         when:
-            SportObject returnedSportObject = sportObjectService.editSportObject(editedSportObject)
+            SportObject returnedSportObject = sportObjectService.editSportObject(1,editedSportObject)
         then:
             returnedSportObject.getId() == 1
     }

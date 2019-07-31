@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-//TODO dopisać testy do obsługi wyjątków
 @Service
 public class SportObjectService {
     
@@ -47,8 +46,8 @@ public class SportObjectService {
         return sportObjectRepository.save(editedSportObject);
     }
     
-    public void deleteSportObject(SportObject sportObject){
-        sportObjectRepository.delete(sportObject);
+    public void deleteSportObjectById(Integer id){
+        sportObjectRepository.delete(getSportObjectById(id));
     }
     
 }

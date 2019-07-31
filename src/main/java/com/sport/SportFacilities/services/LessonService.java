@@ -8,6 +8,7 @@ import com.sport.SportFacilities.models.SportObject;
 import com.sport.SportFacilities.repositories.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -19,10 +20,12 @@ import java.util.Set;
 public class LessonService {
 
     private LessonRepository lessonRepository;
+    private final InstructorService instructorService;
 
     @Autowired
-    public LessonService(LessonRepository lessonRepository) {
+    public LessonService(LessonRepository lessonRepository, InstructorService instructorService) {
         this.lessonRepository = lessonRepository;
+        this.instructorService = instructorService;
     }
 
     public Lesson createLesson(Lesson lesson){
@@ -49,20 +52,19 @@ public class LessonService {
         return lessonRepository.findAllBySportObject(sportObject).orElse(Collections.emptySet());
     }
 
-    public Set<Lesson> getAllLessonsByInstructor(Instructor instructor){
+    @Transactional
+    public Set<Lesson> getAllLessonsByInstructorId(Integer instructorId){
+        Instructor instructor = instructorService.getInstructorById(instructorId);
         return lessonRepository.findAllByInstructor(instructor).orElse(Collections.emptySet());
     }
 
-    public Lesson editLesson(Lesson lesson){
+    public Lesson editLesson(Integer id, Lesson lesson){
+        lesson.setId(id);
         return lessonRepository.save(lesson);
     }
 
-    public void deleteLesson(Lesson lesson){
-        lessonRepository.delete(lesson);
-    }
-
     public void deleteLessonById(Integer id){
-        lessonRepository.deleteById(id);
+        lessonRepository.delete(getLessonById(id));
     }
 
 }

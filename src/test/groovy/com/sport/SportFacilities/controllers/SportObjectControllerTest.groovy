@@ -1,6 +1,9 @@
 package com.sport.SportFacilities.controllers
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import spock.lang.Specification
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 import com.sport.SportFacilities.exceptions.SportObjectNotFoundException
@@ -59,10 +62,10 @@ class SportObjectControllerTest extends Specification {
 
     def "Getting request for sport objects in not existing city should throw exception"() {
         given:
-            sportObjectService.getAllSportObjectsByCity("no existing city") >> {throw new SportObjectNotFoundException()}
+            sportObjectService.getAllSportObjectsByCity("NoExistingCity") >> {throw new SportObjectNotFoundException()}
             SportObjectController sportObjectController = new SportObjectController(sportObjectService)
         when:
-            sportObjectController.getAllSportObjectFromCity("no existing city")
+            sportObjectController.getAllSportObjectFromCity("NoExistingCity")
         then:
             thrown(SportObjectNotFoundException)
     }
@@ -94,20 +97,27 @@ class SportObjectControllerTest extends Specification {
         given:
             hateoasUtils.getUriWithPathAndParams(_,_) >> URI.create("uri")
             sportObjectService.createNewSportObject(sportObjectToAdd) >> sportObjectToAdd
+            sportObjectToAdd.setId(1)
+            Link linkToUpdate = linkTo(methodOn(SportObjectController.class).editSportObject(1,sportObjectToAdd))
+                .withRel("edit-current-object")
             SportObjectController sportObjectController = new SportObjectController(sportObjectService,hateoasUtils)
         when:
             ResponseEntity response = sportObjectController.createSportObject(sportObjectToAdd)
         then:
-            response == ResponseEntity.created(URI.create("uri")).body(sportObjectToAdd)
+            response.statusCode == HttpStatus.CREATED
+            response.getBody()["content"] == sportObjectToAdd
+            response.getBody()["links"][0] == linkToUpdate
+            response.getHeaders()["Location"][0].toURI() == URI.create("uri")
     }
 
     def "Check if editSportObject method calls proper service method"() {
         given:
-            SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        hateoasUtils.getUriWithPathAndParams(_,_) >> URI.create("uri")
+            SportObjectController sportObjectController = new SportObjectController(sportObjectService, hateoasUtils)
         when:
-            sportObjectController.editSportObject(sportObjectWithId1)
+            sportObjectController.editSportObject(1, sportObjectWithId1)
         then:
-            1 * sportObjectService.editSportObject(sportObjectWithId1)
+            1 * sportObjectService.editSportObject(1, sportObjectWithId1)
     }
 
     def "Check if deleteSportObject method calls proper service method"() {
@@ -116,7 +126,6 @@ class SportObjectControllerTest extends Specification {
         when:
             sportObjectController.deleteSportObject(1)
         then:
-            1 * sportObjectService.getSportObjectById(1) >> sportObjectWithId1
-            1 * sportObjectService.deleteSportObject(sportObjectWithId1)
+            1 * sportObjectService.deleteSportObjectById(1)
     }
 }

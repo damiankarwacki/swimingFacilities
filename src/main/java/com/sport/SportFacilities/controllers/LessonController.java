@@ -1,12 +1,8 @@
 package com.sport.SportFacilities.controllers;
 
-import com.sport.SportFacilities.models.Instructor;
 import com.sport.SportFacilities.models.Lesson;
 import com.sport.SportFacilities.models.LessonType;
-import com.sport.SportFacilities.models.SportObject;
-import com.sport.SportFacilities.services.InstructorService;
 import com.sport.SportFacilities.services.LessonService;
-import com.sport.SportFacilities.services.SportObjectService;
 import com.sport.SportFacilities.utils.HateoasUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +26,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class LessonController {
 
     private final LessonService lessonService;
-    private final SportObjectService sportObjectService;
     private final HateoasUtils hateoasUtils;
 
-    //TODO przeniesc wyszstkie wstrzykniecia do serwisu
     @Autowired
-    public LessonController(LessonService lessonService, SportObjectService sportObjectService) {
+    public LessonController(LessonService lessonService) {
         this.lessonService = lessonService;
-        this.sportObjectService = sportObjectService;
         this.hateoasUtils = new HateoasUtils();
     }
 
@@ -67,8 +60,7 @@ public class LessonController {
 
     @GetMapping(params = {"SportObjectId"})
     public ResponseEntity getAllLessonsBySportObjectId(@RequestParam Integer sportObjectId) {
-        SportObject sportObject = sportObjectService.getSportObjectById(sportObjectId);
-        Set<Lesson> lessons = lessonService.getAllLessonsBySportObject(sportObject);
+        Set<Lesson> lessons = lessonService.getAllLessonsBySportObjectId(sportObjectId);
         return ResponseEntity.ok(lessons);
     }
 
@@ -88,7 +80,7 @@ public class LessonController {
         Lesson createdLesson = lessonService.createLesson(lesson);
         URI uri = hateoasUtils.getUriWithPathAndParams("/{id}", createdLesson.getId());
         Resource<Lesson> resource = new Resource<>(createdLesson);
-        Link linkToUpdate = linkTo(methodOn(LessonController.class).editLesson(createdLesson.getId(),createdLesson))
+        Link linkToUpdate = linkTo(methodOn(LessonController.class).editLesson(createdLesson.getId(), createdLesson))
                 .withRel("edit-current-object");
         resource.add(linkToUpdate);
         return ResponseEntity.created(uri).body(resource);

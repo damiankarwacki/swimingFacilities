@@ -17,6 +17,8 @@ import java.time.LocalDate
 
 class LessonSeriviceTest extends Specification {
     @Shared LessonRepository lessonRepository
+    @Shared InstructorService instructorService
+    @Shared SportObjectService sportObjectService
     @Shared Lesson lesson1
     @Shared Lesson lesson2
     @Shared LessonDetail lessonDetail1
@@ -32,6 +34,8 @@ class LessonSeriviceTest extends Specification {
     @Shared SportObject sportObject2 = new SportObject("name1", new Address())
 
     def setup(){
+        sportObjectService = Mock()
+        instructorService = Mock()
         lessonRepository = Mock()
         instructor1 = new Instructor("name1","surname","phone")
         instructor2 = new Instructor("name2","surname","phone")
@@ -49,7 +53,7 @@ class LessonSeriviceTest extends Specification {
     def "should return created lesson"(){
         given:
             lessonRepository.save(lesson1) >> new Lesson(1, lesson1)
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Lesson createdLesson = lessonService.createLesson(lesson1)
         then:
@@ -59,7 +63,7 @@ class LessonSeriviceTest extends Specification {
     def "should return lesson at given id"(){
         given:
             lessonRepository.findById(1) >> Optional.of(new Lesson(1, lesson1))
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Lesson returnedLesson = lessonService.getLessonById(1)
         then:
@@ -70,7 +74,7 @@ class LessonSeriviceTest extends Specification {
         given:
             Set<Lesson> allLessons = [new Lesson(1, lesson1), new Lesson(2, lesson2)]
             lessonRepository.findAll() >> allLessons
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Set<Lesson> returnedLessons = lessonService.getAllLessons()
         then:
@@ -81,7 +85,7 @@ class LessonSeriviceTest extends Specification {
         given:
             Set<Lesson> allCrawlLessons = [new Lesson(1, lesson1), new Lesson(2, lesson2)]
             lessonRepository.findAllByLessonType(LessonType.CRAWL) >> allCrawlLessons
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Set<Lesson> returnedLessons = lessonService.getAllByLessonsByLessonType(LessonType.CRAWL)
         then:
@@ -92,7 +96,7 @@ class LessonSeriviceTest extends Specification {
         given:
             Set<Lesson> allLessonsAtOrderDate1 = [new Lesson(1, lesson1), new Lesson(2, lesson1),]
             lessonRepository.findAllByOrderDate(orderDate1) >> allLessonsAtOrderDate1
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Set<Lesson> returnedLessons = lessonService.getAllLessonsByOrderDate(orderDate1)
         then:
@@ -102,30 +106,32 @@ class LessonSeriviceTest extends Specification {
     def "should return all lessons at given sport object"(){
         given:
             Set<Lesson> allLessonsAtSportObject1 = [new Lesson(1, lesson1), new Lesson(2, lesson1),]
+            sportObjectService.getSportObjectById(1) >> sportObject1
             lessonRepository.findAllBySportObject(sportObject1) >> allLessonsAtSportObject1
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
-            Set<Lesson> returnedLessons = lessonService.getAllLessonsBySportObject(sportObject1)
+            Set<Lesson> returnedLessons = lessonService.getAllLessonsBySportObjectId(1)
         then:
             returnedLessons == allLessonsAtSportObject1
     }
 
     def "should return all lessons with given instructor"(){
         given:
-            Set<Lesson> allLessonsAtInstructor1 = [new Lesson(1, lesson1), new Lesson(2, lesson1),]
-            lessonRepository.findAllByInstructor(instructor1) >> allLessonsAtInstructor1
-            lessonService = new LessonService(lessonRepository)
+            Set<Lesson> allLessonsWithInstructor1 = [new Lesson(1, lesson1), new Lesson(2, lesson1),]
+            instructorService.getInstructorById(1) >> instructor1
+            lessonRepository.findAllByInstructor(instructor1) >> allLessonsWithInstructor1
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
-            Set<Lesson> returnedLessons = lessonService.getAllLessonsByInstructor(instructor1)
+            Set<Lesson> returnedLessons = lessonService.getAllLessonsByInstructorId(1)
         then:
-            returnedLessons == allLessonsAtInstructor1
+            returnedLessons == allLessonsWithInstructor1
     }
 
     def "should return edited lesson"(){
         given:
             Lesson editedLesson = new Lesson(1, lesson2)
             lessonRepository.save(editedLesson) >> editedLesson
-            lessonService = new LessonService(lessonRepository)
+            lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
             Lesson returnedLesson = lessonService.editLesson(1,editedLesson)
         then:

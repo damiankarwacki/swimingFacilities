@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -16,13 +15,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Lesson {
-    
+
     @Id
     @GeneratedValue
     @Getter
     @Setter
     private Integer id;
-    
+
     @NonNull
     @Getter
     @FutureOrPresent(message = "{validation.orderDate}")
@@ -52,6 +51,7 @@ public class Lesson {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "swimming_pool_id")
     @Getter
+    @Setter
     private SwimmingPool swimmingPool;
 
     public Lesson(@NonNull LocalDate orderDate, LessonDetail lessonDetail, @NonNull Instructor instructor, @NonNull SwimmingPool swimmingPool) {
@@ -61,7 +61,7 @@ public class Lesson {
         this.swimmingPool = swimmingPool;
     }
 
-    public Lesson(Integer id, Lesson lesson){
+    public Lesson(Integer id, Lesson lesson) {
         this.id = id;
         this.orderDate = lesson.getOrderDate();
         this.lessonDetail = lesson.getLessonDetail();

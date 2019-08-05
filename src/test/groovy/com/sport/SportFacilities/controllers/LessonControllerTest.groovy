@@ -1,36 +1,31 @@
 package com.sport.SportFacilities.controllers
 
+import com.sport.SportFacilities.exceptions.LessonNotFoundException
 import com.sport.SportFacilities.exceptions.SportObjectNotFoundException
-import com.sport.SportFacilities.models.Address
-import com.sport.SportFacilities.models.Instructor
-import com.sport.SportFacilities.models.Lesson
-import com.sport.SportFacilities.models.LessonDetail
-import com.sport.SportFacilities.models.LessonType
-import com.sport.SportFacilities.models.SportObject
-import com.sport.SportFacilities.models.SwimmingPool
+import com.sport.SportFacilities.models.*
 import com.sport.SportFacilities.services.LessonService
-import com.sport.SportFacilities.services.SportObjectService
 import com.sport.SportFacilities.utils.HateoasUtils
-import org.springframework.beans.factory.annotation.Autowired
+import org.apache.tomcat.jni.Local
 import org.springframework.hateoas.Link
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.time.LocalDate
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 
 class LessonControllerTest extends Specification {
 
     @Shared
-    Instructor instructor = new Instructor("Name","Surname","0999234994")
+    Instructor instructor = new Instructor("Name", "Surname", "0999234994")
     @Shared
     SwimmingPool swimmingPool = new SwimmingPool(1, new SwimmingPool())
+    @Shared
+    SwimmingPool swimmingPoolWithSportObjectId1 = new SwimmingPool(1,1,1,new SportObject(1,new SportObject()))
 
     @Shared
     LessonService lessonService
@@ -44,6 +39,8 @@ class LessonControllerTest extends Specification {
     Lesson lessonWithId1
     @Shared
     Lesson lessonWithInstructor1
+    @Shared
+    Lesson lessonWithSportObjectId1
 
     @Shared
     Lesson lessonWithLessonTypeButterfly
@@ -59,96 +56,125 @@ class LessonControllerTest extends Specification {
         lessonWithId1 = new Lesson(1, lessonToAdd)
         lessonWithInstructor1 = new Lesson(2, lessonToAdd).setInstructor(instructor)
         lessonWithLessonTypeButterfly = new Lesson(3, lessonToAdd)
-                .setLessonDetail(new LessonDetail(LessonType.BUTTERFLY,0f,LocalDate.now()))
+                .setLessonDetail(new LessonDetail(LessonType.BUTTERFLY, 0f, LocalDate.now()))
+        lessonWithSportObjectId1 = new Lesson(3,lessonToAdd).setSwimmingPool(swimmingPoolWithSportObjectId1)
     }
 
-    //TODO Dokończyć testy Damian
     def "Check if getAllLessons method return all Lessons"() {
         given:
         lessonService.getAllLessons() >> lessonsInDb
         LessonController lessonController = new LessonController(lessonService)
         when:
-        ResponseEntity response = sportObjectController.getAllSportObjects()
+        ResponseEntity response = lessonController.getAllLessons()
         then:
-        response == ResponseEntity.ok(sportObjectsInDb)
+        response == ResponseEntity.ok(lessonsInDb)
     }
 
-    def "Check if getAllSportObjectFromCity method return proper sportObject"() {
+    @Unroll
+    def "Check if getAllLessonsByLessonType returns correct object and ignore case in input string"() {
         given:
-        sportObjectService.getAllSportObjectsByCity("city2") >> [sportObjectInCity2]
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        lessonService.getAllByLessonsByLessonType(LessonType.BUTTERFLY) >> [lessonWithLessonTypeButterfly]
+        LessonController lessonController = new LessonController(lessonService)
         when:
-        ResponseEntity response = sportObjectController.getAllSportObjectFromCity("city2")
+        ResponseEntity response = lessonController.getAllLessonsByLessonType(lessonType)
         then:
-        response.getBody()[0] == sportObjectInCity2
+        response.getBody()[0] == lessonWithLessonTypeButterfly
+        where:
+        lessonType << ["butterfly", "Butterfly", "BUTTERFLY", "buTteRfly"]
     }
 
-    def "Getting request for sport objects in not existing city should throw exception"() {
+    @Unroll
+    def "Check if getAllLessonsByInstructorId returns correct object"() {
         given:
-        sportObjectService.getAllSportObjectsByCity("NoExistingCity") >> {throw new SportObjectNotFoundException()}
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        lessonService.getAllLessonsByInstructorId(1) >> [lessonWithInstructor1]
+        LessonController lessonController = new LessonController(lessonService)
         when:
-        sportObjectController.getAllSportObjectFromCity("NoExistingCity")
+        ResponseEntity response = lessonController.getAllLessonsByInstructorId(1)
         then:
-        thrown(SportObjectNotFoundException)
+        response.getBody()[0] == lessonWithInstructor1
     }
 
-    def "Check if getSportObjectById method return response with proper content and links"() {
+    @Unroll
+    def "Check if getAllLessonsByOrderDate return correct object"() {
         given:
-        Link linkForGettingAllSportObjects = linkTo(methodOn(SportObjectController.class).getAllSportObjects())
-                .withRel("all-sport-objects")
-        sportObjectService.getSportObjectById(1) >> sportObjectWithId1
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        Lesson lessonWithOrderDate = new Lesson(LocalDate.parse(orderDate),instructor,swimmingPool)
+        lessonService.getAllLessonsByOrderDate(LocalDate.parse(orderDate)) >> [lessonWithOrderDate]
+        LessonController lessonController = new LessonController(lessonService)
         when:
-        ResponseEntity response = sportObjectController.getSportObjectById(1)
+        ResponseEntity response = lessonController.getAllLessonsByOrderDate(orderDate)
         then:
-        response.getBody()["content"] == sportObjectWithId1
-        response.getBody()["links"][0] == linkForGettingAllSportObjects
+        response.getBody()[0] == lessonWithOrderDate
+        where:
+        orderDate << [LocalDate.now().toString(), LocalDate.now().plusMonths(2).toString()]
     }
 
-    def "Getting request for sport object with is not exists should throw exception"() {
+    @Unroll
+    def "Check if getAllLessonsBySportObjectId return correct object"() {
         given:
-        sportObjectService.getSportObjectById(2) >> {throw new SportObjectNotFoundException()}
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        lessonService.getAllLessonsBySportObjectId(1) >> [lessonWithSportObjectId1]
+        LessonController lessonController = new LessonController(lessonService)
         when:
-        sportObjectController.getSportObjectById(2)
+        ResponseEntity response = lessonController.getAllLessonsBySportObjectId(1)
         then:
-        thrown(SportObjectNotFoundException)
+        response.getBody()[0] == lessonWithSportObjectId1
     }
 
-    def "Check if creation of sport object return proper response with uri"() {
+    def "Check if getLessonById method return response with proper content and links"() {
         given:
-        hateoasUtils.getUriWithPathAndParams(_,_) >> URI.create("uri")
-        sportObjectService.createNewSportObject(sportObjectToAdd) >> sportObjectToAdd
-        sportObjectToAdd.setId(1)
-        Link linkToUpdate = linkTo(methodOn(SportObjectController.class).editSportObject(1,sportObjectToAdd))
+        Link linkForGettingAllLessons = linkTo(methodOn(LessonController.class).getAllLessons())
+                .withRel("all-lessons")
+        lessonService.getLessonById(1) >> lessonWithId1
+        LessonController lessonController = new LessonController(lessonService)
+        when:
+        ResponseEntity response = lessonController.getLessonById(1)
+        then:
+        response.getBody()["content"] == lessonWithId1
+        response.getBody()["links"][0] == linkForGettingAllLessons
+    }
+
+    def "Getting request for lesson with is not exists should throw exception"() {
+        given:
+        lessonService.getLessonById(1) >> { throw new LessonNotFoundException() }
+        LessonController lessonController = new LessonController(lessonService)
+        when:
+        lessonService.getLessonById(1)
+        then:
+        thrown(LessonNotFoundException)
+    }
+
+    def "Check if creation of lesson return proper response with uri"() {
+        given:
+        hateoasUtils.getUriWithPathAndParams(_, _) >> URI.create("uri")
+        lessonService.createLesson(lessonToAdd) >> lessonToAdd
+        lessonToAdd.setId(1)
+        Link linkToUpdate = linkTo(methodOn(LessonController.class).editLesson(1, lessonToAdd))
                 .withRel("edit-current-object")
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService,hateoasUtils)
+        LessonController lessonController = new LessonController(lessonService, hateoasUtils)
         when:
-        ResponseEntity response = sportObjectController.createSportObject(sportObjectToAdd)
+        ResponseEntity response = lessonController.createLesson(lessonToAdd)
         then:
         response.statusCode == HttpStatus.CREATED
-        response.getBody()["content"] == sportObjectToAdd
+        response.getBody()["content"] == lessonToAdd
         response.getBody()["links"][0] == linkToUpdate
         response.getHeaders()["Location"][0].toURI() == URI.create("uri")
     }
 
-    def "Check if editSportObject method calls proper service method"() {
+    def "Check if editLesson method calls proper service method"() {
         given:
-        hateoasUtils.getUriWithPathAndParams(_,_) >> URI.create("uri")
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService, hateoasUtils)
+        hateoasUtils.getUriWithPathAndParams(_, _) >> URI.create("uri")
+        LessonController lessonController = new LessonController(lessonService, hateoasUtils)
         when:
-        sportObjectController.editSportObject(1, sportObjectWithId1)
+        lessonController.editLesson(1, lessonWithId1)
         then:
-        1 * sportObjectService.editSportObject(1, sportObjectWithId1)
+        1 * lessonService.editLesson(1, lessonWithId1)
     }
 
-    def "Check if deleteSportObject method calls proper service method"() {
+    def "Check if deleteLesson method calls proper service method"() {
         given:
-        SportObjectController sportObjectController = new SportObjectController(sportObjectService)
+        LessonController lessonController = new LessonController(lessonService)
         when:
-        sportObjectController.deleteSportObject(1)
+        lessonController.deleteLesson(1)
         then:
-        1 * sportObjectService.deleteSportObjectById(1)
+        1 * lessonService.deleteLessonById(1)
     }
 }

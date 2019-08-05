@@ -1,6 +1,8 @@
 package com.sport.SportFacilities.services;
 
 import com.google.common.collect.Sets;
+import com.sport.SportFacilities.exceptions.LessonNotFoundException;
+import com.sport.SportFacilities.exceptions.LessonTypeNotFoundException;
 import com.sport.SportFacilities.models.Instructor;
 import com.sport.SportFacilities.models.Lesson;
 import com.sport.SportFacilities.models.LessonType;
@@ -19,13 +21,15 @@ import java.util.Set;
 @Service
 public class LessonService {
 
-    private LessonRepository lessonRepository;
+    private final LessonRepository lessonRepository;
+    private final SportObjectService sportObjectService;
     private final InstructorService instructorService;
 
     @Autowired
-    public LessonService(LessonRepository lessonRepository, InstructorService instructorService) {
+    public LessonService(LessonRepository lessonRepository, InstructorService instructorService, SportObjectService sportObjectService) {
         this.lessonRepository = lessonRepository;
         this.instructorService = instructorService;
+        this.sportObjectService = sportObjectService;
     }
 
     public Lesson createLesson(Lesson lesson){
@@ -33,7 +37,7 @@ public class LessonService {
     }
 
     public Lesson getLessonById(Integer id){
-        return lessonRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
     }
 
     public Set<Lesson> getAllLessons(){
@@ -48,7 +52,8 @@ public class LessonService {
         return lessonRepository.findAllByOrderDate(orderDate).orElse(Collections.emptySet());
     }
 
-    public Set<Lesson> getAllLessonsBySportObject(SportObject sportObject){
+    public Set<Lesson> getAllLessonsBySportObjectId(Integer sportObjectId){
+        SportObject sportObject = sportObjectService.getSportObjectById(sportObjectId);
         return lessonRepository.findAllBySportObject(sportObject).orElse(Collections.emptySet());
     }
 

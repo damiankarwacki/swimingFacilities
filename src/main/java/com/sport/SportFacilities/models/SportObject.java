@@ -23,8 +23,11 @@ public class SportObject {
     @Getter
     @Setter
     private String name;
+
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "sportObject", fetch = FetchType.LAZY)
-    private Set<SwimmingPool> swimmingPool;
+    private Set<SwimmingPool> swimmingPools;
 
     @Valid
     @NonNull
@@ -38,6 +41,31 @@ public class SportObject {
     public SportObject(Integer id, SportObject sportObject) {
         this.id = id;
         this.address = sportObject.getAddress();
+        this.name = sportObject.getName();
+        this.swimmingPools = sportObject.getSwimmingPools();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SportObject)) return false;
+
+        SportObject that = (SportObject) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!name.equals(that.name)) return false;
+        if (swimmingPools != null ? !swimmingPools.equals(that.swimmingPools) : that.swimmingPools != null)
+            return false;
+        return address.equals(that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (swimmingPools != null ? swimmingPools.hashCode() : 0);
+        result = 31 * result + address.hashCode();
+        return result;
     }
 }
 

@@ -1,6 +1,7 @@
 package com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.Address
+import com.sport.SportFacilities.models.Customer
 import com.sport.SportFacilities.models.Instructor
 import com.sport.SportFacilities.models.Lesson
 import com.sport.SportFacilities.models.LessonDetail
@@ -15,7 +16,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class LessonSeriviceTest extends Specification {
+class LessonServiceTest extends Specification {
     @Shared LessonRepository lessonRepository
     @Shared InstructorService instructorService
     @Shared SportObjectService sportObjectService
@@ -129,13 +130,16 @@ class LessonSeriviceTest extends Specification {
 
     def "should return edited lesson"(){
         given:
-            Lesson editedLesson = new Lesson(1, lesson2)
-            lessonRepository.save(editedLesson) >> editedLesson
+            Lesson beforeEdition = new Lesson(1,lesson1)
+            beforeEdition.setCustomer(new Customer())
+            Lesson afterEdition = new Lesson(1, lesson2)
+            afterEdition.setCustomer(new Customer())
+            lessonRepository.findById(1) >> Optional.of(beforeEdition)
             lessonService = new LessonService(lessonRepository, instructorService, sportObjectService)
         when:
-            Lesson returnedLesson = lessonService.editLesson(1,editedLesson)
+            Lesson returnedLesson = lessonService.editLesson(1,afterEdition)
         then:
-            returnedLesson == editedLesson
+            afterEdition.equals(returnedLesson)
     }
 
 }

@@ -63,9 +63,14 @@ public class LessonService {
         return lessonRepository.findAllByInstructor(instructor).orElse(Collections.emptySet());
     }
 
+    @Transactional
     public Lesson editLesson(Integer id, Lesson lesson){
-        lesson.setId(id);
-        return lessonRepository.save(lesson);
+        Lesson updatedLesson = getLessonById(id);
+        updatedLesson.setSwimmingPool(lesson.getSwimmingPool());
+        updatedLesson.setLessonDetail(lesson.getLessonDetail());
+        updatedLesson.setInstructor(lesson.getInstructor());
+        updatedLesson.setCustomers(lesson.getCustomers());
+        return updatedLesson;
     }
 
     public void deleteLessonById(Integer id){

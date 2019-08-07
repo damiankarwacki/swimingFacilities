@@ -1,4 +1,4 @@
-package groovy.com.sport.SportFacilities.services
+package com.sport.SportFacilities.services
 
 import com.sport.SportFacilities.models.SportObject
 import com.sport.SportFacilities.models.SwimmingPool

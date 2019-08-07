@@ -63,29 +63,39 @@ class LessonRepositoryTest extends Specification {
                 instructor(instructor1).
                 swimmingPool(swimmingPoolOnSportObject1).
                 orderDate(orderDate).
+                customers(new HashSet<>()).
                 build()
+        lessonOnObject1WithInstructor1.setCustomer(new Customer())
         lessonOnObject2WithInstructor2 = Lesson.builder().
                 instructor(instructor2).
                 swimmingPool(swimmingPoolOnSportObject2).
+                customers(new HashSet<>()).
                 orderDate(orderDate).
                 build()
+        lessonOnObject2WithInstructor2.setCustomer(new Customer())
         lessonOnObject2WithInstructor2WithOrderDate1 = Lesson.builder().
                 instructor(instructor2).
                 swimmingPool(swimmingPoolOnSportObject2).
+                customers(new HashSet<>()).
                 orderDate(orderDate1).
                 build()
+        lessonOnObject2WithInstructor2WithOrderDate1.setCustomer(new Customer())
         lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail = Lesson.builder().
                 instructor(instructor2).
                 swimmingPool(swimmingPoolOnSportObject2).
                 orderDate(orderDate1).
+                customers(new HashSet<>()).
                 lessonDetail(lessonDetail).
                 build()
+        lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail.setCustomer(new Customer())
         lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1 = Lesson.builder().
                 instructor(instructor2).
                 swimmingPool(swimmingPoolOnSportObject2).
                 orderDate(orderDate1).
+                customers(new HashSet<>()).
                 lessonDetail(lessonDetail1).
                 build()
+        lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1.setCustomer(new Customer())
         
         lessons = [lessonOnObject1WithInstructor1, lessonOnObject2WithInstructor2, lessonOnObject2WithInstructor2WithOrderDate1, lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail, lessonOnObject2WithInstructor2WithOrderDate1AndLessonDetail1]
     }

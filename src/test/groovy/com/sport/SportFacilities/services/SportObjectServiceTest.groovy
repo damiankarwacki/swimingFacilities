@@ -68,13 +68,14 @@ class SportObjectServiceTest extends Specification {
 
     def "should return edited sport object"(){
         given:
-            SportObject editedSportObject = new SportObject(1, sportObject1)
-            sportObjectRepository.save(editedSportObject) >> editedSportObject
+            SportObject beforeEdition = new SportObject(1,sportObject1)
+            SportObject afterEdition = new SportObject(1, sportObject2)
+            sportObjectRepository.findById(1) >> Optional.of(beforeEdition)
             sportObjectService = new SportObjectService(sportObjectRepository)
         when:
-            SportObject returnedSportObject = sportObjectService.editSportObject(1,editedSportObject)
+            SportObject returnedSportObject = sportObjectService.editSportObject(1,afterEdition)
         then:
-            returnedSportObject.getId() == 1
+            returnedSportObject == afterEdition
     }
 
 }

@@ -41,9 +41,13 @@ public class SportObjectService {
                 .orElseThrow(() -> new SportObjectNotFoundException("city",city));
     }
 
-    public SportObject editSportObject(Integer id, SportObject editedSportObject){
-        editedSportObject.setId(id);
-        return sportObjectRepository.save(editedSportObject);
+    @Transactional
+    public SportObject editSportObject(Integer id, SportObject sportObject){
+        SportObject editedSportObject = getSportObjectById(id);
+        editedSportObject.setAddress(sportObject.getAddress());
+        editedSportObject.setName(sportObject.getName());
+        editedSportObject.setSwimmingPools(sportObject.getSwimmingPools());
+        return editedSportObject;
     }
     
     public void deleteSportObjectById(Integer id){

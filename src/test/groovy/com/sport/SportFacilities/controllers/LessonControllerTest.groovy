@@ -51,6 +51,7 @@ class LessonControllerTest extends Specification {
         lessonToAdd = Lesson.builder()
                 .instructor(new Instructor())
                 .swimmingPool(new SwimmingPool())
+                .customers(new HashSet<Customer>())
                 .orderDate(LocalDate.now())
                 .build()
         lessonWithId1 = new Lesson(1, lessonToAdd)
@@ -97,15 +98,16 @@ class LessonControllerTest extends Specification {
     @Unroll
     def "Check if getAllLessonsByOrderDate return correct object"() {
         given:
-        Lesson lessonWithOrderDate = new Lesson(LocalDate.parse(orderDate),instructor,swimmingPool)
-        lessonService.getAllLessonsByOrderDate(LocalDate.parse(orderDate)) >> [lessonWithOrderDate]
-        LessonController lessonController = new LessonController(lessonService)
+            Lesson lessonWithOrderDate = new Lesson(LocalDate.parse(orderDate),instructor,swimmingPool)
+            lessonWithOrderDate.setCustomers(new HashSet<Customer>())
+            lessonService.getAllLessonsByOrderDate(LocalDate.parse(orderDate)) >> [lessonWithOrderDate]
+            LessonController lessonController = new LessonController(lessonService)
         when:
-        ResponseEntity response = lessonController.getAllLessonsByOrderDate(orderDate)
+            ResponseEntity response = lessonController.getAllLessonsByOrderDate(orderDate)
         then:
-        response.getBody()[0] == lessonWithOrderDate
+            response.getBody()[0] == lessonWithOrderDate
         where:
-        orderDate << [LocalDate.now().toString(), LocalDate.now().plusMonths(2).toString()]
+            orderDate << [LocalDate.now().toString(), LocalDate.now().plusMonths(2).toString()]
     }
 
     @Unroll

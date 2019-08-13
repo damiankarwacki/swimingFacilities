@@ -32,8 +32,11 @@ public class InstructorService {
     }
 
     public Instructor editInstructor(Instructor instructor, Integer id){
-        instructor.setId(id);
-        return instructorRepository.save(instructor);
+        Instructor editedInstructor = getInstructorById(id);
+        editedInstructor.setSurname(instructor.getSurname());
+        editedInstructor.setPhone(instructor.getPhone());
+        editedInstructor.setName(instructor.getName());
+        return editedInstructor;
     }
 
     public void deleteInstructor(Instructor Instructor){

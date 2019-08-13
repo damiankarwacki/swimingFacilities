@@ -29,8 +29,12 @@ public class CustomerService {
     }
     
     public Customer editCustomer(Customer customer, Integer id){
-        customer.setId(id);
-        return customerRepository.save(customer);
+        Customer editedCustomer = getCustomerById(id);
+        editedCustomer.setSurname(customer.getSurname());
+        editedCustomer.setPhone(customer.getPhone());
+        editedCustomer.setEmail(customer.getEmail());
+        editedCustomer.setName(customer.getName());
+        return editedCustomer;
     }
     
     public Customer getCustomerById(Integer id){

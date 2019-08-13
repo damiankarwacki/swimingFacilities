@@ -24,17 +24,19 @@ public class LessonDetail {
     @NonNull
     @Enumerated(EnumType.STRING)
     @Getter
+    @Setter
     private LessonType lessonType;
 
     @Positive
     @NonNull
     @Getter
+    @Setter
     private Float price;
 
-//  todo pytanie: czy w przypadku lekcji które już się odbyły to będzie kolidowało? czy ta walidacja działa tylko prze tworzeniu obiektu?
     @FutureOrPresent
     @NonNull
     @Getter
+    @Setter
     private LocalDate date;
 
     public LessonDetail(Integer id, LessonDetail lessonDetail) {

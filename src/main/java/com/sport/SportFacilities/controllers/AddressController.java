@@ -46,9 +46,9 @@ public class AddressController {
             return ResponseEntity.created(uri).body(createdAddress);
     }
 
-    @PutMapping()
-    public ResponseEntity editAddress(@RequestBody Address address){
-        Address updatedAddress = addressService.editAddress(address);
+    @PutMapping("/{id}")
+    public ResponseEntity editAddress(@PathVariable Integer id, @RequestBody Address address){
+        Address updatedAddress = addressService.editAddress(id, address);
         return ResponseEntity.ok(updatedAddress);
     }
 

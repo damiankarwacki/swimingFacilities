@@ -47,8 +47,12 @@ public class LessonDetailService {
         return lessonDetailRepository.findAllByLessonType(lessonType).orElse(Collections.emptySet());
     }
 
-    public LessonDetail editLessonDetail(LessonDetail lessonDetail){
-        return lessonDetailRepository.save(lessonDetail);
+    public LessonDetail editLessonDetail(Integer id, LessonDetail lessonDetail){
+        LessonDetail editedLessonDetail = getLessonDetailById(id);
+        editedLessonDetail.setDate(lessonDetail.getDate());
+        editedLessonDetail.setLessonType(lessonDetail.getLessonType());
+        editedLessonDetail.setPrice(lessonDetail.getPrice());
+        return editedLessonDetail;
     }
 
     public void deleteLessonDetail(LessonDetail lessonDetail){

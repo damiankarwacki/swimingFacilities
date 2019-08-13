@@ -42,8 +42,11 @@ public class SwimmingPoolService {
     }
 
     public SwimmingPool editSwimmingPool(SwimmingPool swimmingPool, Integer id){
-        swimmingPool.setId(id);
-        return swimmingPoolRepository.save(swimmingPool);
+        SwimmingPool editedSwimmingPool = getSwimmingPoolById(id);
+        editedSwimmingPool.setDepth(swimmingPool.getDepth());
+        editedSwimmingPool.setLanesQuantity(swimmingPool.getLanesQuantity());
+        editedSwimmingPool.setLenght(swimmingPool.getLenght());
+        return editedSwimmingPool;
     }
 
     public void deleteSwimmingPool(SwimmingPool swimmingPool){

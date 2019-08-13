@@ -16,12 +16,15 @@ public class Address {
     private Integer id;
     @NonNull
     @Getter
+    @Setter
     private String street;
     @NonNull
     @Getter
+    @Setter
     private String city;
     @NonNull
     @Getter
+    @Setter
     private String postCode;
 
     @OneToOne(mappedBy = "address")

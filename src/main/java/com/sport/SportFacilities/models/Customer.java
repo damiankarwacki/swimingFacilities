@@ -20,21 +20,25 @@ public class Customer {
     @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
+    @Setter
     private String name;
 
     @Pattern(regexp = "^[A-Z]{1}[a-z]{1,}")
     @NonNull
     @Getter
+    @Setter
     private String surname;
 
     @Pattern(regexp = "^[+][0-9 ]{1,}")
     @NonNull
     @Getter
+    @Setter
     private String phone;
 
     @Email
     @NonNull
     @Getter
+    @Setter
     private String email;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

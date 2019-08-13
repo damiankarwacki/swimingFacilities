@@ -20,16 +20,19 @@ public class SwimmingPool {
     @Getter
     @NonNull
     @Positive
+    @Setter
     private Integer lanesQuantity;
     
     @Getter
     @NonNull
     @Positive
+    @Setter
     private Float lenght;
     
     @Getter
     @NonNull
     @Positive
+    @Setter
     private Float depth;
     
     @OneToMany(mappedBy = "swimmingPool",
